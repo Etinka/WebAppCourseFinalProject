@@ -15,7 +15,6 @@ namespace WebAppCourseFinalProject.Controllers
 
         public IActionResult About()
         {
-            //Testing Git commits
             ViewData["Message"] = "Your application description page.";
 
             return View();
