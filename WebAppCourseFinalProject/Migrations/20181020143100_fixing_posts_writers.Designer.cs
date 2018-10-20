@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAppCourseFinalProject.Models;
 
 namespace WebAppCourseFinalProject.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20181020143100_fixing_posts_writers")]
+    partial class fixing_posts_writers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,7 +52,7 @@ namespace WebAppCourseFinalProject.Migrations
 
                     b.Property<string>("VideoLink");
 
-                    b.Property<int?>("WriterId");
+                    b.Property<int>("WriterId");
 
                     b.HasKey("Id");
 
@@ -113,7 +115,8 @@ namespace WebAppCourseFinalProject.Migrations
                 {
                     b.HasOne("WebAppCourseFinalProject.Models.Writer", "Writer")
                         .WithMany("Posts")
-                        .HasForeignKey("WriterId");
+                        .HasForeignKey("WriterId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("WebAppCourseFinalProject.Models.Writer", b =>

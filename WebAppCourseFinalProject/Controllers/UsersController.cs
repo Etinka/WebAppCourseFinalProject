@@ -35,7 +35,8 @@ namespace WebAppCourseFinalProject
                 if (user.IsAdmin)
                 {
                     //Redirect to writer page
-                    var writer = await _context.Writer.SingleOrDefaultAsync(m => m.User.ID == user.ID);
+                    var writer = await getWriterAsync(user);
+           
                     return RedirectToAction("Details", "Writers", new { id = writer.Id });
                 }
                 return RedirectToAction("UserPage", "Users", new { id = user.ID });
@@ -57,11 +58,6 @@ namespace WebAppCourseFinalProject
             if (user != null)
             {
                 ViewData["Login"] = user.FirstName;
-                if (user.IsAdmin)
-                {
-                    RedirectToAction("AdminPage", "Users", new { id = id });
-
-                }
             }
             return View(user);
         }
@@ -192,7 +188,7 @@ namespace WebAppCourseFinalProject
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string email, string password)
         {
-            var user = await _context.User.SingleOrDefaultAsync(m => m.Email == email && m.Password == password);
+            User user = await _context.User.SingleOrDefaultAsync(m => m.Email == email && m.Password == password);
             //if user is null -> doesn't exist - show error 
             if (user == null)
             {
@@ -204,7 +200,8 @@ namespace WebAppCourseFinalProject
                 if (user.IsAdmin)
                 {
                     //Redirect to writer page
-                    var writer = await _context.Writer.SingleOrDefaultAsync(m => m.User.ID == user.ID);
+                    var writer = await getWriterAsync(user);
+
                     return RedirectToAction("Details", "Writers", new { id = writer.Id });
                 }
                 else

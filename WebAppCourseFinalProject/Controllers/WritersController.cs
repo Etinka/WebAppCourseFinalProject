@@ -147,5 +147,12 @@ namespace WebAppCourseFinalProject
         {
             return _context.Writer.Any(e => e.Id == id);
         }
+
+        public IActionResult AddPost(int? id)
+        {
+            return RedirectToAction("Create", "Posts" );
+        }
     }
+
+  
 }

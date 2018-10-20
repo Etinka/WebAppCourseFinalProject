@@ -42,7 +42,7 @@ namespace WebAppCourseFinalProject
         }
 
         // GET: Posts/Create
-        public IActionResult Create()
+        public  IActionResult  Create()
         {
             return View();
         }
@@ -52,8 +52,11 @@ namespace WebAppCourseFinalProject
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,VideoLink")] Post post)
+        public async Task<IActionResult> Create( [Bind("Id,Title,Content,VideoLink")] Post post)
         {
+           // post.Writer = await getWriterAsync();
+          //  post.Categories = new List<Category>();
+
             if (ModelState.IsValid)
             {
                 _context.Add(post);

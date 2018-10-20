@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using WebAppCourseFinalProject.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebAppCourseFinalProject.Controllers
 {
@@ -35,6 +36,22 @@ namespace WebAppCourseFinalProject.Controllers
             HttpContext.Session.SetString("UserName", name);
         }
 
+        protected async Task<Writer> getWriterAsync(User user = null)
+        {
+            var id = 0;
+            if(user == null)
+            {
+                id =  (int)getUserId();
+            }
+            else
+            {
+                id = user.ID;
+            }
+            var writer = await _context.Writer.Include(w => w.User).FirstOrDefaultAsync(m => m.User.ID == id);
+           
+            return writer;
+
+        }
         protected int? getUserId()
         {
             return HttpContext.Session.GetInt32("UserId");
