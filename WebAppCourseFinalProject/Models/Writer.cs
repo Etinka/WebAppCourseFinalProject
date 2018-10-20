@@ -7,9 +7,9 @@ namespace WebAppCourseFinalProject.Models
 {
     public class Writer
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
 
-        public int UserId { get; set; }
+        public User User { get; set; }
 
         public string DisplayName { get; set; }
 

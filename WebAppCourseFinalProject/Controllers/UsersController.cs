@@ -7,17 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebAppCourseFinalProject.Models;
 using Microsoft.AspNetCore.Http;
+using WebAppCourseFinalProject.Controllers;
 
 namespace WebAppCourseFinalProject
 {
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
-        private readonly UserContext _context;
 
-        public UsersController(UserContext context)
+        public UsersController(UserContext context) : base(context)
         {
-            ViewData["Login"] = "Login";
-            _context = context;
         }
 
         // GET: Users
@@ -45,9 +43,22 @@ namespace WebAppCourseFinalProject
         }
 
         // GET: Users/Login
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             ViewData["Login"] = "Login";
+            if (isLoggedIn())
+            {
+                var user = await _context.User.SingleOrDefaultAsync(m => m.ID == HttpContext.Session.GetInt32("UserId"));
+
+                if (user.IsAdmin)
+                {
+                    //Redirect to writer page
+                    var writer = await _context.Writer.SingleOrDefaultAsync(m => m.User.ID == user.ID);
+                    return RedirectToAction("Details", "Writers", new { id = writer.Id });
+                }
+                return RedirectToAction("UserPage", "Users", new { id = user.ID });
+            }
+
             return View();
         }
 
@@ -65,7 +76,7 @@ namespace WebAppCourseFinalProject
                 ViewData["Login"] = user.FirstName;
                 if (user.IsAdmin)
                 {
-                    RedirectToAction("AdminPage", "Users", new { id = id});
+                    RedirectToAction("AdminPage", "Users", new { id = id });
 
                 }
             }
@@ -187,11 +198,12 @@ namespace WebAppCourseFinalProject
             }
             else
             {
-                HttpContext.Session.SetInt32("UserId", user.ID);
-                HttpContext.Session.SetInt32("LoggedIn", 1);
+                setUserLoggedIn(user.ID, user.FirstName);
                 if (user.IsAdmin)
                 {
-                  return  RedirectToAction("AdminPage", "Users", new { id = user.ID });
+                    //Redirect to writer page
+                    var writer = await _context.Writer.SingleOrDefaultAsync(m => m.User.ID == user.ID);
+                    return RedirectToAction("Details", "Writers", new { id = writer.Id });
                 }
                 else
                 {
@@ -201,25 +213,9 @@ namespace WebAppCourseFinalProject
             return View(user);
         }
 
-        public async Task<IActionResult> AdminPage(int? id)
-        {
-            var user = await _context.User.SingleOrDefaultAsync(m => m.ID == id);
-            //if user is null -> doesn't exist - show error 
-            if (user == null)
-            {
-                ViewData["Error"] = "User or email not found";
-            }
-            return View(user);
-        }
-
         private bool UserExists(int id)
         {
             return _context.User.Any(e => e.ID == id);
-        }
-
-        private bool isLoggedIn()
-        {
-            return HttpContext.Session.GetInt32("LoggedIn") == 1;
         }
     }
 }

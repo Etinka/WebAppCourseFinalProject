@@ -11,31 +11,16 @@ using Microsoft.AspNetCore.Http;
 
 namespace WebAppCourseFinalProject.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        User loggedInUser = null;
-        private readonly UserContext _context;
-        public HomeController(UserContext context)
+        public HomeController(UserContext context) : base(context)
         {
-            _context = context;
+
         }
 
         public async Task<IActionResult> Index()
         {
-            string logginTab = "Login";
 
-            if (isLoggedIn())
-            {
-                var user = await _context.User.SingleOrDefaultAsync(m => m.ID == userId());
-                if (user != null)
-                {
-                    logginTab = user.FirstName;
-                    loggedInUser = user;
-
-                }
-
-            }
-            ViewData["Login"] = logginTab;
             return View();
         }
 
@@ -62,24 +47,19 @@ namespace WebAppCourseFinalProject.Controllers
 
         public IActionResult Login()
         {
-            if (isLoggedIn())
-            {
-                return RedirectToAction("UserPage", "Users", new { id = HttpContext.Session.GetInt32("UserId") });
-            }
-            else
-            {
-                return RedirectToAction("Login", "Users");
-            }
+
+            return RedirectToAction("Login", "Users");
+
         }
 
         public IActionResult Error()
         {
             return View();
-        }                                             
+        }
 
         private int? userId()
         {
-           return HttpContext.Session.GetInt32("UserId");
+            return HttpContext.Session.GetInt32("UserId");
         }
 
         private bool isLoggedIn()
