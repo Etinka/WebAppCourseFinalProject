@@ -15,7 +15,7 @@ namespace WebAppCourseFinalProject.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "This is an AWESOME blog about Rubber Duckies!";
 
             return View();
         }
@@ -23,6 +23,13 @@ namespace WebAppCourseFinalProject.Controllers
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
+
+            return View();
+        }
+
+        public IActionResult CreateUser()
+        {
+            ViewData["Message"] = "These are the users";
 
             return View();
         }
