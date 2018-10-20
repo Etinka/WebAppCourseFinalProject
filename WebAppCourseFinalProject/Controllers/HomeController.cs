@@ -22,7 +22,7 @@ namespace WebAppCourseFinalProject.Controllers
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Do you want to ask something? Suggest something? Please contact our support :)";
 
             return View();
         }
