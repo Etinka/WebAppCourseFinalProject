@@ -24,31 +24,13 @@ namespace WebAppCourseFinalProject
             return View(await _context.User.ToListAsync());
         }
 
-        // GET: Users/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.User
-                .SingleOrDefaultAsync(m => m.ID == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
-        }
-
         // GET: Users/Login
         public async Task<IActionResult> Login()
         {
             ViewData["Login"] = "Login";
             if (isLoggedIn())
             {
-                var user = await _context.User.SingleOrDefaultAsync(m => m.ID == HttpContext.Session.GetInt32("UserId"));
+                var user = await _context.User.SingleOrDefaultAsync(m => m.ID == getUserId());
 
                 if (user.IsAdmin)
                 {
@@ -61,6 +43,7 @@ namespace WebAppCourseFinalProject
 
             return View();
         }
+
 
         // GET: Users/Login
         public async Task<IActionResult> UserPage(int? id)
@@ -80,6 +63,25 @@ namespace WebAppCourseFinalProject
 
                 }
             }
+            return View(user);
+        }
+
+
+        // GET: Users/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.User
+                .SingleOrDefaultAsync(m => m.ID == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             return View(user);
         }
 

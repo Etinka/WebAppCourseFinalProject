@@ -18,9 +18,8 @@ namespace WebAppCourseFinalProject.Controllers
 
         }
 
-        public async Task<IActionResult> Index()
+        public  IActionResult Index()
         {
-
             return View();
         }
 
@@ -38,13 +37,6 @@ namespace WebAppCourseFinalProject.Controllers
             return View();
         }
 
-        public IActionResult CreateUser()
-        {
-            ViewData["Message"] = "These are the users";
-
-            return View();
-        }
-
         public IActionResult Login()
         {
 
@@ -55,16 +47,6 @@ namespace WebAppCourseFinalProject.Controllers
         public IActionResult Error()
         {
             return View();
-        }
-
-        private int? userId()
-        {
-            return HttpContext.Session.GetInt32("UserId");
-        }
-
-        private bool isLoggedIn()
-        {
-            return HttpContext.Session.GetInt32("LoggedIn") == 1;
         }
     }
 }
