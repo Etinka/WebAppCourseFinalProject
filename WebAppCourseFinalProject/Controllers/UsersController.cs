@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebAppCourseFinalProject.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace WebAppCourseFinalProject
 {
@@ -15,7 +16,8 @@ namespace WebAppCourseFinalProject
 
         public UsersController(UserContext context)
         {
-            _context = context;    
+            ViewData["Login"] = "Login";
+            _context = context;
         }
 
         // GET: Users
@@ -39,6 +41,34 @@ namespace WebAppCourseFinalProject
                 return NotFound();
             }
 
+            return View(user);
+        }
+
+        // GET: Users/Login
+        public IActionResult Login()
+        {
+            ViewData["Login"] = "Login";
+            return View();
+        }
+
+        // GET: Users/Login
+        public async Task<IActionResult> UserPage(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.User.SingleOrDefaultAsync(m => m.ID == id);
+            if (user != null)
+            {
+                ViewData["Login"] = user.FirstName;
+                if (user.IsAdmin)
+                {
+                    RedirectToAction("AdminPage", "Users", new { id = id});
+
+                }
+            }
             return View(user);
         }
 
@@ -144,9 +174,52 @@ namespace WebAppCourseFinalProject
             return RedirectToAction("Index");
         }
 
+        // POST: Users/Delete/5
+        [HttpPost, ActionName("Login")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(string email, string password)
+        {
+            var user = await _context.User.SingleOrDefaultAsync(m => m.Email == email && m.Password == password);
+            //if user is null -> doesn't exist - show error 
+            if (user == null)
+            {
+                ViewData["Error"] = "User or email not found";
+            }
+            else
+            {
+                HttpContext.Session.SetInt32("UserId", user.ID);
+                HttpContext.Session.SetInt32("LoggedIn", 1);
+                if (user.IsAdmin)
+                {
+                  return  RedirectToAction("AdminPage", "Users", new { id = user.ID });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home", new { id = user.ID });
+                }
+            }
+            return View(user);
+        }
+
+        public async Task<IActionResult> AdminPage(int? id)
+        {
+            var user = await _context.User.SingleOrDefaultAsync(m => m.ID == id);
+            //if user is null -> doesn't exist - show error 
+            if (user == null)
+            {
+                ViewData["Error"] = "User or email not found";
+            }
+            return View(user);
+        }
+
         private bool UserExists(int id)
         {
             return _context.User.Any(e => e.ID == id);
+        }
+
+        private bool isLoggedIn()
+        {
+            return HttpContext.Session.GetInt32("LoggedIn") == 1;
         }
     }
 }

@@ -31,7 +31,8 @@ namespace WebAppCourseFinalProject
         {
             // Add framework services.
             services.AddMvc();
-
+            services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
+            services.AddSession();
             services.AddDbContext<UserContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("UserContext")));
         }
@@ -53,6 +54,7 @@ namespace WebAppCourseFinalProject
             }
 
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
