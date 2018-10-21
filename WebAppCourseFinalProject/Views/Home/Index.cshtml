@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<WebAppCourseFinalProject.Models.Post>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -31,7 +33,7 @@
                 </p>
             </div>
         </div>
-      
+
     </div>
     <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -43,13 +45,32 @@
     </a>
 </div>
 
-<div class="row">
-    <div class="col-md-3">
-        <h2>Here we will have the list of blogs</h2>
-        <ul>
-            <li>Just a list</li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518004">Ignore these texts</a> for managing client-side libraries</li>
-        </ul>
-    </div>
-  
-</div>
+<h2>Here we will have the list of blogs</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+

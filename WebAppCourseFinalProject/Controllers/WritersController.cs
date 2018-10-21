@@ -152,6 +152,14 @@ namespace WebAppCourseFinalProject
         {
             return RedirectToAction("Create", "Posts" );
         }
+
+        public async Task<IActionResult> WriterPosts(int id)
+        {
+            var query = (from post in _context.Post
+                         where post.Writer.Id == id
+                         select post).ToListAsync();
+            return View(await query);
+        }
     }
 
   

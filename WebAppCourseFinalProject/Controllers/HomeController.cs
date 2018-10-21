@@ -18,9 +18,9 @@ namespace WebAppCourseFinalProject.Controllers
 
         }
 
-        public  IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await _context.Post.ToListAsync());
         }
 
         public IActionResult About()

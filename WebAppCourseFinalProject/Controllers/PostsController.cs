@@ -54,12 +54,10 @@ namespace WebAppCourseFinalProject
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create( [Bind("Id,Title,Content,VideoLink")] Post post)
         {
-           // post.Writer = await getWriterAsync();
-          //  post.Categories = new List<Category>();
-
             if (ModelState.IsValid)
             {
-                _context.Add(post);
+                post.Writer = await getWriterAsync();
+                _context.Add(post);             
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
