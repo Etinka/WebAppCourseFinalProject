@@ -23,12 +23,18 @@
             @Html.DisplayFor(model => model.Content)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.VideoLink)
+            @Html.DisplayNameFor(model => model.CreatedAt)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.VideoLink)
+            @Html.DisplayFor(model => model.CreatedAt)
         </dd>
     </dl>
+</div>
+
+<!-- TODO need to hide when there is no link -->
+<div>
+    <iframe  id="video_link" width="420" height="315"
+            src="@Model.VideoLink"></iframe>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |

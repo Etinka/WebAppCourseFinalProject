@@ -22,5 +22,13 @@ namespace WebAppCourseFinalProject.Models
 
         public ICollection<Category> Categories { get; set; }//many2many - many category, many products
 
+        [Required()]
+        public DateTime CreatedAt { get; set; }
+
+        public Post()
+        {
+            CreatedAt = DateTime.Now;
+        }
+
     }
 }
