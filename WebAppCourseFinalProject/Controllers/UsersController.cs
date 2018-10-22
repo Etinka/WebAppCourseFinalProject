@@ -36,18 +36,17 @@ namespace WebAppCourseFinalProject
                 {
                     //Redirect to writer page
                     var writer = await getWriterAsync(user);
-           
+
                     return RedirectToAction("Details", "Writers", new { id = writer.Id });
                 }
-                return RedirectToAction("UserPage", "Users", new { id = user.ID });
+                return RedirectToAction("Details", "Users", new { id = user.ID });
             }
 
             return View();
         }
 
-
-        // GET: Users/Login
-        public async Task<IActionResult> UserPage(int? id)
+        // GET: Users/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -62,25 +61,6 @@ namespace WebAppCourseFinalProject
             return View(user);
         }
 
-
-        // GET: Users/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.User
-                .SingleOrDefaultAsync(m => m.ID == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
-        }
-
         // GET: Users/Create
         public IActionResult Create()
         {
@@ -88,17 +68,23 @@ namespace WebAppCourseFinalProject
         }
 
         // POST: Users/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Password,Email")] User user)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                if (EmailExists(user.Email))
+                {
+                    ViewData["Error"] = "Email already exists";
+                }
+                else
+                {
+                    _context.Add(user);
+                    await _context.SaveChangesAsync();
+                    setUserLoggedIn(user.ID, user.FirstName);
+                    return RedirectToAction("Details", "Users", new { id = user.ID });
+                }
             }
             return View(user);
         }
@@ -120,8 +106,6 @@ namespace WebAppCourseFinalProject
         }
 
         // POST: Users/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,Email,Password,IsAdmin")] User user)
@@ -216,5 +200,11 @@ namespace WebAppCourseFinalProject
         {
             return _context.User.Any(e => e.ID == id);
         }
+
+        private bool EmailExists(String email)
+        {
+            return _context.User.Any(m => m.Email == email);
+        }
+
     }
 }
