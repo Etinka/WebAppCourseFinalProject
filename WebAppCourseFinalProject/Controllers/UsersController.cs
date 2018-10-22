@@ -82,7 +82,7 @@ namespace WebAppCourseFinalProject
                 {
                     _context.Add(user);
                     await _context.SaveChangesAsync();
-                    setUserLoggedIn(user.ID, user.FirstName);
+                    setUserLoggedIn(user.ID, user.FirstName, user.IsAdmin);
                     return RedirectToAction("Details", "Users", new { id = user.ID });
                 }
             }
@@ -102,6 +102,8 @@ namespace WebAppCourseFinalProject
             {
                 return NotFound();
             }
+
+            ViewBag.ShowDiv = isAdmin();
             return View(user);
         }
 
@@ -133,8 +135,14 @@ namespace WebAppCourseFinalProject
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                if (isAdmin())
+                {
+                    return RedirectToAction("UsersList", "Writers");
+                }
+                return RedirectToAction("Details", "Users", new { id = user.ID });
             }
+
+
             return View(user);
         }
 
@@ -180,7 +188,7 @@ namespace WebAppCourseFinalProject
             }
             else
             {
-                setUserLoggedIn(user.ID, user.FirstName);
+                setUserLoggedIn(user.ID, user.FirstName, user.IsAdmin);
                 if (user.IsAdmin)
                 {
                     //Redirect to writer page

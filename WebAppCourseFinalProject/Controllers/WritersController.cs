@@ -160,6 +160,11 @@ namespace WebAppCourseFinalProject
                          select post).ToListAsync();
             return View(await query);
         }
+
+        public async Task<IActionResult> UsersList()
+        {
+            return View(await _context.User.ToListAsync());
+        }
     }
 
   

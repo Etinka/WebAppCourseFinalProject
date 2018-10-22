@@ -8,10 +8,11 @@
 
 <form asp-action="Edit">
     <div class="form-horizontal">
-        <h4>User</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="ID" />
+        <input type="hidden" asp-for="Password" />
+
         <div class="form-group">
             <label asp-for="FirstName" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -29,13 +30,23 @@
         <div class="form-group">
             <label asp-for="Email" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Email" disabled="disabled" class="form-control" />
+                <input asp-for="Email" readonly="readonly" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
         </div>
-       
-        
-      
+
+        @if (ViewBag.ShowDiv)
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="checkbox">
+                        <input asp-for="IsAdmin" />
+                        <label asp-for="IsAdmin"></label>
+                    </div>
+                </div>
+            </div>
+
+        }
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />

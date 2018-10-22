@@ -29,26 +29,35 @@ namespace WebAppCourseFinalProject.Controllers
             this.ViewData["Login"] = logginTab;
         }
 
-        protected void setUserLoggedIn(int id, string name)
+        protected void setUserLoggedIn(int id, string name, bool admin)
         {
             HttpContext.Session.SetInt32("UserId", id);
             HttpContext.Session.SetInt32("LoggedIn", 1);
             HttpContext.Session.SetString("UserName", name);
+            HttpContext.Session.SetInt32("Admin", admin?1:0);
         }
 
         protected async Task<Writer> getWriterAsync(User user = null)
         {
             var id = 0;
-            if(user == null)
+            if (user == null)
             {
-                id =  (int)getUserId();
+                id = (int)getUserId();
             }
             else
             {
                 id = user.ID;
             }
             var writer = await _context.Writer.Include(w => w.User).FirstOrDefaultAsync(m => m.User.ID == id);
-           
+
+            if(writer == null && user.IsAdmin)
+            {
+                writer = new Writer();
+                writer.DisplayName = user.FirstName;
+                writer.User = user;
+                _context.Add(writer);
+                await _context.SaveChangesAsync();
+            }
             return writer;
 
         }
@@ -67,7 +76,17 @@ namespace WebAppCourseFinalProject.Controllers
             if (HttpContext != null)
             {
                 int? loggedIn = HttpContext.Session.GetInt32("LoggedIn");
-                return loggedIn != null && HttpContext.Session.GetInt32("LoggedIn") == 1;
+                return loggedIn != null && loggedIn == 1;
+            }
+            return false;
+        }
+
+        protected bool isAdmin()
+        {
+            if (HttpContext != null)
+            {
+                int? admin = HttpContext.Session.GetInt32("Admin");
+                return admin != null && admin == 1;
             }
             return false;
         }
