@@ -1,6 +1,8 @@
 ﻿body {
-    padding-top: 50px;
     padding-bottom: 20px;
+    font-family: 'Mali', serif;
+    color: black;
+    text-transform: lowercase;
 }
 
 /* Wrapping element */
@@ -34,4 +36,70 @@ textarea {
     .carousel-caption {
         display: none;
     }
+}
+
+.header {
+    height: 156px;
+    width: 100%;
+    background-color: #e6d03f;
+}
+
+.img_title {
+    width: 445px;
+    height: 118px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-left: 57px;
+    margin-top: 21px;
+}
+
+#topheader .navbar {
+    background-color: white;
+    color: black;
+    padding-left: 50px;
+    padding-right: 50px;
+    border-bottom: 2px solid #e6d03f;
+}
+
+#topheader .navbar-nav li > a {
+    background-color: white;
+    font-size: 18px;
+    color: black;
+}
+
+#topheader .navbar-nav li.active > a {
+    background-color: white;
+    text-shadow: -1px 1px 0 #e6d03f;
+    font-size: 18px;
+    color: black;
+}
+
+.User-Icon {
+    width: 148px;
+    display: block;
+    height: 148px;
+    object-fit: contain;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#login-form {
+    padding: 40px;
+    width: 370px;
+    margin-left: auto;
+    margin-right: auto;
+    object-fit: contain;
+}
+
+#login-btn {
+    width: 117px;
+    height: 40px;
+    border-radius: 4px;
+    float: right;
+    border: 1px solid #e6d03f;
+    background-color: #e6d03f;
+}
+
+#login-form .form-group{
+    width:100%;
 }

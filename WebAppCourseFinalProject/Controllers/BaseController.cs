@@ -21,7 +21,7 @@ namespace WebAppCourseFinalProject.Controllers
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            string logginTab = "Login";
+            string logginTab = "Log in/Register";
             if (isLoggedIn())
             {
                 logginTab = getUserFirstName();
