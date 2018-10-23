@@ -27,7 +27,6 @@ namespace WebAppCourseFinalProject
         // GET: Users/Login
         public async Task<IActionResult> Login()
         {
-            ViewData["Login"] = "Login";
             if (isLoggedIn())
             {
                 var user = await _context.User.SingleOrDefaultAsync(m => m.ID == getUserId());
