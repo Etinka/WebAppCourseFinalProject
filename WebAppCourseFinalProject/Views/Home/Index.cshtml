@@ -9,6 +9,12 @@
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
     </ol>
+    <div class="wether-box alert alert-primary" role="alert">
+        <h5>Tel-Aviv Temparature</h5>
+        <div>Max Temp: <span id="max_temp"></span>&#8451;</div>
+        <div>Min Temp: <span id="min_temp"></span>&#8451;</div>
+        <div>Current Temp: <span id="temp"></span>&#8451;</div>
+    </div>
     <!--Top running carousel, can change to featured posts-->
     <div class="carousel-inner" role="listbox">
         <div class="item active">
@@ -78,6 +84,10 @@
 @section Scripts{
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="~/js/wether.js"></script>
+}
+
+@section Styles{ 
+    <link href="~/css/wether.css" rel="stylesheet" />
 }
 
 

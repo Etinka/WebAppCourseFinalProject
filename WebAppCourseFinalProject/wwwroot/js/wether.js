@@ -7,8 +7,10 @@ function GetWetherData() {
     var url = API_BASE_URL + '/data/2.5/weather?id=293396&units=metric&appid=' + API_KEY;
     //var url = "http://localhost:37787/js/api_response.json";
 
-    $.get(url).done(function (response) {
-        console.log(response);
+    $.get(url).done(function (wether) {
+        $('#max_temp').text(wether.main.temp_max);
+        $('#min_temp').text(wether.main.temp_min);
+        $('#temp').text(wether.main.temp);
     })
 }
 
