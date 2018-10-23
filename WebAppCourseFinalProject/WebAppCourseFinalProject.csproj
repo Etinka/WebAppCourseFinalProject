@@ -38,10 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Users\UserPage.cshtml">
+    <Content Update="Views\Users\Login.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Users\Login.cshtml">
+    <Content Update="Views\Writers\UsersList.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

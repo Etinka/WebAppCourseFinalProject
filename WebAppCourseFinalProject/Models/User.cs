@@ -24,6 +24,8 @@ namespace WebAppCourseFinalProject.Models
         [Required(ErrorMessage = "Mandatory")]
         public string Email { get; set; }
 
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Mandatory")]
         public string Password { get; set; }
 
         [DefaultValue(false)]
