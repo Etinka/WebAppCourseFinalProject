@@ -30,10 +30,8 @@
 <body>
 
     <div class="header">
-
         <img src="~/images/img_title@2x.png"
              class="img_title">
-
     </div>
 
     <div id="topheader">
@@ -45,22 +43,22 @@
                         <li><a asp-area="" asp-controller="Home" asp-action="About">about</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">archives</a></li>
                     </ul>
-                      <ul class="nav navbar-nav  navbar-right">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Login">@ViewData["Login"]</a></li>
-                </ul>
+                    <ul class="nav navbar-nav  navbar-right">
+                        <li><a asp-area="" asp-controller="Home" asp-action="Login">@ViewData["Login"]</a></li>
+                    </ul>
                 </div>
             </div>
         </nav>
     </div>
-  
+
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; 2018 - Ducks Blog</p>
-        </footer>
-    </div>
 
+    </div>
+    <footer>
+        <partial name="_Footer" />
+    </footer>
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -81,6 +79,7 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
+
     <script>
         $('#topheader .navbar-nav a').on('click', function () {
             $('#topheader .navbar-nav').find('li.active').removeClass('active');

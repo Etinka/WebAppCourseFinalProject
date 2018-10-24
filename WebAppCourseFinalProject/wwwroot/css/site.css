@@ -1,5 +1,4 @@
 ﻿body {
-    padding-bottom: 20px;
     font-family: 'Mali', serif;
     color: black;
     text-transform: lowercase;
@@ -100,6 +99,22 @@ textarea {
     background-color: #e6d03f;
 }
 
-#login-form .form-group{
-    width:100%;
+#login-form .form-group {
+    width: 100%;
 }
+
+#ducks-footer {
+    height: 156px;
+    background-color: #e6d03f;
+    bottom: 0;
+    width: 100%;
+    padding:30px;
+   
+}
+
+#footer-about {
+    width: 50%;
+    margin: 0 auto;
+}
+
+
