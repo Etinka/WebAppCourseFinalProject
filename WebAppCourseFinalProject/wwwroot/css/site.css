@@ -2,6 +2,7 @@
     font-family: 'Mali', serif;
     color: black;
     text-transform: lowercase;
+
 }
 
 /* Wrapping element */
@@ -9,6 +10,7 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding-bottom: 15px;
 }
 
 /* Set widths on the form inputs since otherwise they're 100% wide */

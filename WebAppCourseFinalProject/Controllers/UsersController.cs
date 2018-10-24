@@ -27,6 +27,8 @@ namespace WebAppCourseFinalProject
         // GET: Users/Login
         public async Task<IActionResult> Login()
         {
+            ViewBag.Current = "Login";
+
             if (isLoggedIn())
             {
                 var user = await _context.User.SingleOrDefaultAsync(m => m.ID == getUserId());
@@ -47,6 +49,8 @@ namespace WebAppCourseFinalProject
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ViewBag.Current = "Login";
+
             if (id == null)
             {
                 return NotFound();

@@ -20,12 +20,14 @@ namespace WebAppCourseFinalProject.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewBag.Current = "Index";
             return View(await _context.Post.ToListAsync());
         }
 
         public IActionResult About()
         {
             ViewData["Message"] = "This is an AWESOME blog about Rubber Duckies!";
+            ViewBag.Current = "About";
 
             return View();
         }
@@ -33,12 +35,13 @@ namespace WebAppCourseFinalProject.Controllers
         public IActionResult Contact()
         {
             ViewData["Message"] = "Do you want to ask something? Suggest something? Please contact our support :)";
-
+            ViewBag.Current = "Contact";
             return View();
         }
 
         public IActionResult Login()
         {
+            ViewBag.Current = "Login";
 
             return RedirectToAction("Login", "Users");
 
