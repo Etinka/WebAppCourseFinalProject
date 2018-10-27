@@ -17,6 +17,14 @@
     width: 30%;
 }
 
+#home-posts-view a:link, a:visited {
+    color: black;
+}
+
+#home-posts-view a:hover {
+    text-shadow: -1px 1px 0 #e6d03f;
+    text-decoration-line: none;
+}
 .body-content #main-post-content {
     float: left;
     width: 63%;

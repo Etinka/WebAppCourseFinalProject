@@ -37,12 +37,13 @@ namespace WebAppCourseFinalProject
             {
                 return NotFound();
             }
+            ViewData["isAdmin"] = isAdmin() ? 1 : 0;
 
             return View(post);
         }
 
         // GET: Posts/Create
-        public  IActionResult  Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -52,12 +53,12 @@ namespace WebAppCourseFinalProject
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( [Bind("Id,Title,Content,VideoLink")] Post post)
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,VideoLink")] Post post)
         {
             if (ModelState.IsValid)
             {
                 post.Writer = await getWriterAsync();
-                _context.Add(post);             
+                _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

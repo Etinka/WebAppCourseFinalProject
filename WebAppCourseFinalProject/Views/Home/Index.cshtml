@@ -5,49 +5,56 @@
 }
 
 
+<div id="home-posts-view">
 
+    <a href=@Url.Action("Details", "Posts" , new { id= @Model.First().Id  })>
 
-
-<div id="main-post-content">
-    <h2> @Html.DisplayFor(modelItem => @Model.First().Title)</h2>
-    <br />  
-    Created at: 
-    @Html.DisplayFor(modelItem => @Model.First().CreatedAt)
-    <br />    <br />
-    @Html.DisplayFor(modelItem => @Model.First().Content)
-    <br />
-
-</div>
-<aside>
-    <section>
-        <div id="sidebar">
-
-            <div class="wether-box alert alert-primary" role="alert">
-                <h5>Tel-Aviv Temparature</h5>
-                <div>Max Temp: <span id="max_temp"></span>&#8451;</div>
-                <div>Min Temp: <span id="min_temp"></span>&#8451;</div>
-                <div>Current Temp: <span id="temp"></span>&#8451;</div>
-            </div>
-            <h3 id="sidebar-title">Recent Quacks: </h3>
+        <div id="main-post-content">
+            <h2> @Html.DisplayFor(modelItem => @Model.First().Title)</h2>
             <br />
-            @foreach (var item in Model)
-            {
-
-                <h4>   @Html.DisplayFor(modelItem => item.Title)</h4>
-                <br />
-
-                @Html.DisplayFor(modelItem => item.ContentTrimmed)
-                <br />
-                <br />
-                <br />
-
-            }
+            Created at:
+            @Html.DisplayFor(modelItem => @Model.First().CreatedAt)
+            <br />    <br />
+            @Html.DisplayFor(modelItem => @Model.First().Content)
+            <br />
 
         </div>
+    </a>
+    <aside>
+        <section>
+            <div id="sidebar">
+                <div class="wether-box alert alert-primary" role="alert">
+                    <h5>Tel-Aviv Temparature</h5>
+                    <div>Max Temp: <span id="max_temp"></span>&#8451;</div>
+                    <div>Min Temp: <span id="min_temp"></span>&#8451;</div>
+                    <div>Current Temp: <span id="temp"></span>&#8451;</div>
+                </div>
+                <h3 id="sidebar-title">Recent Quacks: </h3>
+                <br />
+                @foreach (var item in Model)
+                {
+                    if (item.Id != @Model.First().Id)
+                    {
+                        <div>
+                            <a href=@Url.Action("Details", "Posts", new { id = @item.Id })>
 
-    </section>
-</aside>
+                                <h4>   @Html.DisplayFor(modelItem => item.Title)</h4>
+                                <br />
 
+                                @Html.DisplayFor(modelItem => item.ContentTrimmed)
+                                <br />
+                                <br />
+                                <br />
+                            </a>
+                        </div>
+                    }
+                }
+
+            </div>
+
+        </section>
+    </aside>
+</div>
 <svg id="bars"></svg>
 @section Scripts{
     <script src="https://d3js.org/d3.v5.min.js"></script>
