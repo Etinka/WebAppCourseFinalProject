@@ -21,7 +21,7 @@ namespace WebAppCourseFinalProject.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.Current = "Index";
-            return View(await _context.Post.ToListAsync());
+            return View(await _context.Post.OrderByDescending(i => i.CreatedAt).Take(3).ToListAsync());
         }
 
         public IActionResult About()

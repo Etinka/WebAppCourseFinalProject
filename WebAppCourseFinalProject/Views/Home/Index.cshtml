@@ -5,46 +5,50 @@
 }
 
 
-<div class="wether-box alert alert-primary" role="alert">
-    <h5>Tel-Aviv Temparature</h5>
-    <div>Max Temp: <span id="max_temp"></span>&#8451;</div>
-    <div>Min Temp: <span id="min_temp"></span>&#8451;</div>
-    <div>Current Temp: <span id="temp"></span>&#8451;</div>
+
+
+
+<div id="main-post-content">
+    <h2> @Html.DisplayFor(modelItem => @Model.First().Title)</h2>
+    <br />  
+    Created at: 
+    @Html.DisplayFor(modelItem => @Model.First().CreatedAt)
+    <br />    <br />
+    @Html.DisplayFor(modelItem => @Model.First().Content)
+    <br />
+
 </div>
+<aside>
+    <section>
+        <div id="sidebar">
 
+            <div class="wether-box alert alert-primary" role="alert">
+                <h5>Tel-Aviv Temparature</h5>
+                <div>Max Temp: <span id="max_temp"></span>&#8451;</div>
+                <div>Min Temp: <span id="min_temp"></span>&#8451;</div>
+                <div>Current Temp: <span id="temp"></span>&#8451;</div>
+            </div>
+            <h3 id="sidebar-title">Recent Quacks: </h3>
+            <br />
+            @foreach (var item in Model)
+            {
 
-<svg></svg>
+                <h4>   @Html.DisplayFor(modelItem => item.Title)</h4>
+                <br />
 
-<h2>Here we will have the list of blogs</h2>
+                @Html.DisplayFor(modelItem => item.ContentTrimmed)
+                <br />
+                <br />
+                <br />
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Content)
-                </td>
+            }
 
-            </tr>
-        }
-    </tbody>
-</table>
+        </div>
 
+    </section>
+</aside>
 
+<svg id="bars"></svg>
 @section Scripts{
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="~/js/home_page.js"></script>

@@ -16,6 +16,18 @@ namespace WebAppCourseFinalProject.Models
         [Required(ErrorMessage = "Mandatory")]
         public string Content { get; set; }
 
+        public string ContentTrimmed
+        {
+            get
+            {
+                if (Content.Length > 200)
+                {
+                    return Content.Substring(0, 200) + "...";
+                }
+                return Content;
+            }
+        }
+
         public string VideoLink { get; set; }
 
         public Writer Writer { get; set; }
