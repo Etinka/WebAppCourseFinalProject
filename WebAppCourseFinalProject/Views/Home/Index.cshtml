@@ -6,27 +6,30 @@
 
 <div id="search-view">
     <form asp-action="Search">
-        <div class="form-group">
-            @Html.DropDownList("SelectedWriter", new SelectList(Model.Writers, "Id", "DisplayName"), "Select Writer")
-        </div>
-        <div class="form-group">
-            @Html.ListBox("SelectedCategories", new SelectList(Model.Categories, "Id", "Name"), "Select")
-            
-        </div>
-        <div class="form-group">
-            <label for="start_date">From:</label>
-            <input name="start_date" type="date" class="form-control" id="start_date" placeholder="From">
-        </div>
-        <div class="form-group">
-            <label for="end_date">To:</label>
-            <input name="end_date" type="date" class="form-control" id="end_date" placeholder="To">
-        </div>
-        <p class="form-actions no-color">
-            <input id="btnSubmit" type="submit" value="Search" class="btn btn-default" />
 
-        </p>
+        @using (Html.BeginForm())
+        {
+            @Html.ListBoxFor(m => m.SelectedCategories, new SelectList(Model.Categories, "Id", "Name"), new { size = 2 })
+            <br />
+            <div class="form-group">
+                @Html.DropDownListFor(m => m.SelectedWriter, new SelectList(Model.Writers, "Id", "DisplayName"), "Select Writer")
+            </div>
+            <div class="form-group">
+                <label for="start_date">From:</label>
+                <input name="start_date" type="date" class="form-control" id="start_date" placeholder="From">
+            </div>
+            <div class="form-group">
+                <label for="end_date">To:</label>
+                <input name="end_date" type="date" class="form-control" id="end_date" placeholder="To">
+            </div>
+            <p class="form-actions no-color">
+                <input id="btnSubmit" type="submit" value="Search" class="btn btn-default" />
 
+            </p>
+        }
     </form>
+
+    
 </div>
 <div id="home-posts-view">
     @if (@Model.Posts.Count() > 0)

@@ -11,9 +11,9 @@ namespace WebAppCourseFinalProject.Models
         public IEnumerable<Post> Posts { get; set; }
         public IEnumerable<Writer> Writers { get; set; }
         public IEnumerable<Category> Categories { get; set; }
-        public MultiSelectList SelectedCategories { get; set; }
+
         public int? SelectedWriter { get; set; }
-        public SearchModel SearchModel { get; set; }
+        public IEnumerable<string> SelectedCategories { get; set; }
 
         public HomeViewModel(IEnumerable<Post> _Posts, IEnumerable<Writer> _Writers, IEnumerable<Category> _Categories)
         {

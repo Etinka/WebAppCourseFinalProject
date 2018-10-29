@@ -9,6 +9,7 @@ using System.Collections;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text;
 
 namespace WebAppCourseFinalProject.Controllers
 {
@@ -53,13 +54,21 @@ namespace WebAppCourseFinalProject.Controllers
 
         }
 
-        public IActionResult Search(int? SelectedWriter, DateTime? start_date, DateTime? end_date, MultiSelectList SelectedCategories   )
+        [HttpPost]
+        public string Search(IEnumerable<string> SelectedCategories, int? SelectedWriter, DateTime? start_date, DateTime? end_date)
         {
-            ViewBag.Current = "Login";
-
-            return RedirectToAction("Login", "Users");
+            //TODO add the actual search
+            if (SelectedCategories == null)
+            {
+                return "No cities are selected";
+            }
+            else
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("You selected – " + string.Join(",", SelectedCategories));
+                return sb.ToString();
+            }
         }
-
 
         public IActionResult Error()
         {
