@@ -13,8 +13,11 @@ namespace WebAppCourseFinalProject
     public class PostsController : BaseController
     {
 
+        private TwitterController twitterController;
+
         public PostsController(UserContext context) : base(context)
         {
+            this.twitterController = new TwitterController();
         }
 
         // GET: Posts
@@ -57,6 +60,7 @@ namespace WebAppCourseFinalProject
         {
             if (ModelState.IsValid)
             {
+                twitterController.publishTweet("Just a try to post a new quacks");
                 post.Writer = await getWriterAsync();
                 _context.Add(post);
                 await _context.SaveChangesAsync();
