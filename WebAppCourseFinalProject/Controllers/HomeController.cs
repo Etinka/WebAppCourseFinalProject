@@ -8,6 +8,7 @@ using WebAppCourseFinalProject.Models;
 using System.Collections;
 using System.Web;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebAppCourseFinalProject.Controllers
 {
@@ -21,7 +22,12 @@ namespace WebAppCourseFinalProject.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.Current = "Index";
-            return View(await _context.Post.OrderByDescending(i => i.CreatedAt).Take(3).ToListAsync());
+            var allPosts = await _context.Post.ToListAsync();
+            var viewModel = new HomeViewModel(await _context.Post.OrderByDescending(i => i.CreatedAt).Take(4).ToListAsync(),
+                await _context.Writer.ToListAsync(), await _context.Category.ToListAsync());
+            //viewModel.Writers = allPosts.ToSelectListItems(selectedId);
+
+            return View(viewModel);
         }
 
         public IActionResult About()
@@ -46,6 +52,14 @@ namespace WebAppCourseFinalProject.Controllers
             return RedirectToAction("Login", "Users");
 
         }
+
+        public IActionResult Search(int? SelectedWriter, DateTime? start_date, DateTime? end_date, MultiSelectList SelectedCategories   )
+        {
+            ViewBag.Current = "Login";
+
+            return RedirectToAction("Login", "Users");
+        }
+
 
         public IActionResult Error()
         {

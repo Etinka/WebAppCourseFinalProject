@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,6 +38,9 @@ namespace WebAppCourseFinalProject.Models
 
         [Required()]
         public DateTime CreatedAt { get; set; }
+
+        [NotMapped]
+        public SelectList DropDownList { get; set; }
 
         public Post()
         {
