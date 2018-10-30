@@ -8,6 +8,9 @@
 
 <div>
     <h4>We will have the dashboard here</h4>
+
+    <svg></svg>
+
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -31,3 +34,11 @@
     <a asp-action="UsersList">Users Details</a>
 
 </div>
+@section Scripts{
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="~/js/writer_page.js"></script>
+}
+
+@section Styles{
+    <link href="~/css/writer_page.css" rel="stylesheet" />
+}
