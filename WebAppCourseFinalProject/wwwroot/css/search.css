@@ -1,0 +1,14 @@
+﻿
+#search-view {
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    object-fit: contain;
+    display: grid;
+    grid-template-columns: minmax(200px, 1fr) 200px 200px;
+}
+
+.form-actions {
+    margin-top: 30px;
+    margin-bottom:auto;
+}

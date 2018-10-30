@@ -60,7 +60,7 @@ namespace WebAppCourseFinalProject.Controllers
             IQueryable<Post> query = _context.Post;
 
             //Dates
-            DateTime start = start_date ?? new DateTime(2018, 01, 01);
+            DateTime start = start_date ?? new DateTime(1900, 01, 01);
             DateTime end = end_date ?? DateTime.Now;
             query = query.Where(x => x.CreatedAt.Date <= end.Date && x.CreatedAt >= start.Date);
 
@@ -82,11 +82,24 @@ namespace WebAppCourseFinalProject.Controllers
 
             }
 
-            //Add group by
-            var posts = await query.ToListAsync();
+            var viewModel = new SearchViewModel();
 
-            //Todo return the actual relevant view
-            return View();
+            //Add group by 
+            if (SelectedWriter == null && SelectedCategories == null)
+            {
+                var groupedPosts =  await query.GroupBy(p => p.Writer.DisplayName).ToListAsync();     
+                viewModel.GroupedPosts = groupedPosts;
+            }
+            else
+            {
+                var posts = await query.OrderByDescending(i => i.CreatedAt).ToListAsync();
+                viewModel.Posts = posts;
+            }
+
+            viewModel.Writers = await _context.Writer.ToListAsync();
+            viewModel.Categories = await _context.Category.ToListAsync();
+
+            return View(viewModel);
 
         }
 

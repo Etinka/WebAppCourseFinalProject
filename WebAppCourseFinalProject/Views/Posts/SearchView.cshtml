@@ -1,0 +1,41 @@
+﻿@model WebAppCourseFinalProject.Models.SearchViewModel
+
+<link href="~/css/search.css" rel="Stylesheet" type="text/css" />
+
+<div id="search-view">
+    <form asp-action="Search">
+        @using (Html.BeginForm())
+        {
+            <div class="col-xs-6 col-md-4">
+                <label>Select Categories:</label>
+                @Html.ListBoxFor(m => m.SelectedCategories, new SelectList(Model.Categories, "Id", "Name"), new { size = 2 })
+                <div class="form-group">
+                    <br />
+
+                    <label>Select a Writer:</label>
+
+                    @Html.DropDownListFor(m => m.SelectedWriter, new SelectList(Model.Writers, "Id", "DisplayName"), "Select Writer")
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-4">
+
+                <div class="form-group">
+                    <label for="start_date">From:</label>
+                    <input name="start_date" type="date" class="form-control" id="start_date" placeholder="From">
+                </div>
+                <div class="form-group">
+                    <label for="end_date">To:</label>
+                    <input name="end_date" type="date" class="form-control" id="end_date" placeholder="To">
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <p class="form-actions no-color">
+                    <input id="btnSubmit" type="submit" value="Search" class="btn btn-default" />
+
+                </p>
+            </div>
+                }
+        </form>
+
+
+</div>

@@ -9,17 +9,13 @@ namespace WebAppCourseFinalProject.Models
     public class HomeViewModel
     {
         public IEnumerable<Post> Posts { get; set; }
-        public IEnumerable<Writer> Writers { get; set; }
-        public IEnumerable<Category> Categories { get; set; }
 
-        public int? SelectedWriter { get; set; }
-        public IEnumerable<int> SelectedCategories { get; set; }
+        public SearchViewModel SearchViewModel { get; set; }
 
         public HomeViewModel(IEnumerable<Post> _Posts, IEnumerable<Writer> _Writers, IEnumerable<Category> _Categories)
         {
             Posts = _Posts;
-            Writers = _Writers;
-            Categories = _Categories;
+            SearchViewModel = new SearchViewModel(_Writers, _Categories);
         }
     }
 }

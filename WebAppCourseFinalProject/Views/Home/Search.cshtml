@@ -1,0 +1,56 @@
+﻿@model WebAppCourseFinalProject.Models.SearchViewModel
+
+<partial name="../Posts/SearchView" />
+
+@if ((Model.Posts != null && Model.Posts.Count() > 0)
+    || (Model.GroupedPosts != null && Model.GroupedPosts.Count() > 0))
+{
+    <h3>Search Results: </h3>
+    <br />
+    @if (Model.Posts != null)
+    {
+        @foreach (var item in Model.Posts)
+        {
+            <div>
+                <a href=@Url.Action("Details", "Posts", new { id = @item.Id })>
+
+                    <h4>   @Html.DisplayFor(modelItem => item.Title)</h4>
+                    <br />
+
+                    @Html.DisplayFor(modelItem => item.ContentTrimmed)
+                    <br />
+                    <br />
+                    <br />
+                </a>
+            </div>
+        }
+    }
+    @if (Model.GroupedPosts != null)
+    {
+        @foreach (var group in Model.GroupedPosts)
+        {
+            <h4>@Html.DisplayFor(modelItem => group.Key)</h4>
+
+            @foreach (var item in group)
+            {
+
+                <div>
+                    <a href=@Url.Action("Details", "Posts", new { id = @item.Id })>
+
+                        <h4>   @Html.DisplayFor(modelItem => item.Title)</h4>
+                        <br />
+
+                        @Html.DisplayFor(modelItem => item.ContentTrimmed)
+                        <br />
+                        <br />
+                        <br />
+                    </a>
+                </div>
+            }
+        }
+    }
+}
+else
+{
+    <h3>No Results!</h3>
+}
