@@ -1,11 +1,8 @@
-﻿
-var drawBarChart = true;
-
-function DrawBarChart(categories) {
+﻿function DrawBarChart(categories) {
     // init chart
     var svgWidth = 500;
     var svgHeight = 300;
-    var svg = d3.select('svg')
+    var svg = d3.select('svg#bar')
         .attr("width", svgWidth)
         .attr("height", svgHeight)
         .attr("class", "bar-chart");
@@ -67,73 +64,80 @@ function DrawBarChart(categories) {
 }
 
 function DrawPieChart(categories) {
-    var width = 400,
-        height = 400,
-        radius = 200,
-        innerRadius = 100,
-        colors = d3.scaleOrdinal(d3.schemeCategory20);
-
-    var pieData = [
-        {
-            label: "part one",
-            value: 50
-        },
-        {
-            label: "part two",
-            value: 25
-        },
-        {
-            label: "part three",
-            value: 10
-        }
-    ]
+   
+    var posts = [];
+    for (var cat in categories) {
+        posts.push({ category: cat, posts: categories[cat] }); 
+    }    
 
     var pie = d3.pie()
-        .value(function (d) { return d.count; })
-        .sort(null);
+        .value(function (d) { return d.posts })
 
-    var arc = svg.arc()
-        .outerRadius(radius);
+    var slices = pie(posts);
 
+    var arc = d3.arc()
+        .innerRadius(0)
+        .outerRadius(60);
 
-    var myChart = d3.select('svg').append('svg')
-        .attr('width', width)
-        .attr('height', height)
-        .append('g')
-        .attr('transform', 'translate(' + (width - radius) + ', ' + (height - radius) + ')')
-        .selectAll('path').data(pie(pieData))
-        .enter().append('g')
-        .attr('class', 'slice');
+    // helper that returns a color based on an ID
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
 
+    var svg = d3.select('svg#pie')
+        .append('svg')
+        .attr("class", "pie");
+    var g = svg.append('g')
+        .attr('transform', 'translate(200, 75)');
 
-    var slices = d3.selectAll('g.slice')
-        .append('path')
-        .attr('fill', function (d, i) {
-            return colors(i);
-        })
+    var arcGraph = g.selectAll('path.slice')
+        .data(slices)
+        .enter();
+    arcGraph.append('path')
+        .attr('class', 'slice')
         .attr('d', arc)
-        .transition()
-        .ease("elastic")
-        .duration(2000)
-        .attrTween("d", tweenPie);
+        .attr('fill', function (d) {
+            return color(d.data.category);
+        });
 
-    function tweenPie(b) {
-        var i = d3.interpolate({ startAngle: 1.1 * Math.PI, endAngle: 1.1 * Math.PI }, b);
-        return function (t) { return arc(i(t)); };
-    }
+    arcGraph.append("text")
+        .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+
+        .attr("dy", "0.35em")
+        .text(function (d) { return d.data.posts });
+    // building a legend is as simple as binding
+    // more elements to the same data. in this case,
+    // <text> tags
+    svg.append('g')
+        .attr('class', 'legend')
+        .selectAll('text')
+        .data(slices)
+        .enter()
+        .append('text')
+        .text(function (d) { return '• ' + d.data.category; })
+        .attr('fill', function (d) { return color(d.data.category); })
+        .attr('y', function (d, i) { return 20 * (i + 1); })
+
 }
 
 function DrawGraph(categories) {
-    if (drawBarChart) {
-        DrawBarChart(categories);
-    }
-    else {
-        DrawPieChart(categories);
-    }   
+    DrawBarChart(categories);
+    DrawPieChart(categories);
 }
 
 function GetCategoryPostsCount() {
     $.get('/api/post-count').done(DrawGraph);
 }
 
+function OnChartOptionChange(event) {
+    console.log(event.currentTarget.value);
+    var drawBarChart = event.currentTarget.value === 'Bar Chart';
+    if (drawBarChart) {
+        $('#pie').addClass('hidden');
+        $('#bar').removeClass('hidden');
+    } else {
+        $('#bar').addClass('hidden');
+        $('#pie').removeClass('hidden');
+    }
+}
+
 GetCategoryPostsCount();
+$('select').change(OnChartOptionChange);
