@@ -259,3 +259,4 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/WebAppCourseFinalProject/Migrations/20181030165518_category_posts_many_to_many.Designer.cs
