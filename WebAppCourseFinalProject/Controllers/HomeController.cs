@@ -8,6 +8,8 @@ using WebAppCourseFinalProject.Models;
 using System.Collections;
 using System.Web;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text;
 
 namespace WebAppCourseFinalProject.Controllers
 {
@@ -21,7 +23,12 @@ namespace WebAppCourseFinalProject.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.Current = "Index";
-            return View(await _context.Post.OrderByDescending(i => i.CreatedAt).Take(3).ToListAsync());
+            var allPosts = await _context.Post.ToListAsync();
+            var viewModel = new HomeViewModel(await _context.Post.OrderByDescending(i => i.CreatedAt).Take(4).ToListAsync(),
+                await _context.Writer.ToListAsync(), await _context.Category.ToListAsync());
+            //viewModel.Writers = allPosts.ToSelectListItems(selectedId);
+
+            return View(viewModel);
         }
 
         public IActionResult About()
@@ -45,6 +52,22 @@ namespace WebAppCourseFinalProject.Controllers
 
             return RedirectToAction("Login", "Users");
 
+        }
+
+        [HttpPost]
+        public string Search(IEnumerable<string> SelectedCategories, int? SelectedWriter, DateTime? start_date, DateTime? end_date)
+        {
+            //TODO add the actual search
+            if (SelectedCategories == null)
+            {
+                return "No cities are selected";
+            }
+            else
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("You selected – " + string.Join(",", SelectedCategories));
+                return sb.ToString();
+            }
         }
 
         public IActionResult Error()
