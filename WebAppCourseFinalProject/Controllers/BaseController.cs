@@ -34,7 +34,7 @@ namespace WebAppCourseFinalProject.Controllers
             HttpContext.Session.SetInt32("UserId", id);
             HttpContext.Session.SetInt32("LoggedIn", 1);
             HttpContext.Session.SetString("UserName", name);
-            HttpContext.Session.SetInt32("Admin", admin?1:0);
+            HttpContext.Session.SetInt32("Admin", admin ? 1 : 0);
         }
 
         protected async Task<Writer> getWriterAsync(User user = null)

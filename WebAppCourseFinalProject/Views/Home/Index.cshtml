@@ -1,49 +1,95 @@
-﻿@model IEnumerable<WebAppCourseFinalProject.Models.Post>
+﻿@model WebAppCourseFinalProject.Models.HomeViewModel
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
+<div id="search-view">
+    <form asp-action="Search">
 
-<div class="wether-box alert alert-primary" role="alert">
-    <h5>Tel-Aviv Temparature</h5>
-    <div>Max Temp: <span id="max_temp"></span>&#8451;</div>
-    <div>Min Temp: <span id="min_temp"></span>&#8451;</div>
-    <div>Current Temp: <span id="temp"></span>&#8451;</div>
-</div>
-
-
-
-<h2>Here we will have the list of blogs</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+        @using (Html.BeginForm())
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Content)
-                </td>
+            @Html.ListBoxFor(m => m.SelectedCategories, new SelectList(Model.Categories, "Id", "Name"), new { size = 2 })
+            <br />
+            <div class="form-group">
+                @Html.DropDownListFor(m => m.SelectedWriter, new SelectList(Model.Writers, "Id", "DisplayName"), "Select Writer")
+            </div>
+            <div class="form-group">
+                <label for="start_date">From:</label>
+                <input name="start_date" type="date" class="form-control" id="start_date" placeholder="From">
+            </div>
+            <div class="form-group">
+                <label for="end_date">To:</label>
+                <input name="end_date" type="date" class="form-control" id="end_date" placeholder="To">
+            </div>
+            <p class="form-actions no-color">
+                <input id="btnSubmit" type="submit" value="Search" class="btn btn-default" />
 
-            </tr>
+            </p>
         }
-    </tbody>
-</table>
+    </form>
+
+    
+</div>
+<div id="home-posts-view">
+    @if (@Model.Posts.Count() > 0)
+    {
+        <a href=@Url.Action("Details", "Posts" , new { id= @Model.Posts.First().Id  })>
+
+        <div id="main-post-content">
+            <h2> @Html.DisplayFor(modelItem => @Model.Posts.First().Title)</h2>
+            <br />
+            Created at:
+            @Html.DisplayFor(modelItem => @Model.Posts.First().CreatedAt)
+            <br />    <br />
+            @Html.DisplayFor(modelItem => @Model.Posts.First().Content)
+            <br />
+
+            </div>
+        </a>
+    } else
+    {
+        <h2>No Posts</h2>
+
+    }
 
 
+    <aside>
+        <section>
+            <div id="sidebar">
+                <div class="wether-box alert alert-primary" role="alert">
+                    <h5>Tel-Aviv Temparature</h5>
+                    <div>Max Temp: <span id="max_temp"></span>&#8451;</div>
+                    <div>Min Temp: <span id="min_temp"></span>&#8451;</div>
+                    <div>Current Temp: <span id="temp"></span>&#8451;</div>
+                </div>
+                <h3 id="sidebar-title">Recent Quacks: </h3>
+                <br />
+                @foreach (var item in Model.Posts)
+                {
+                    if (item.Id != @Model.Posts.First().Id)
+                    {
+                        <div>
+                            <a href=@Url.Action("Details", "Posts", new { id = @item.Id })>
+
+                                <h4>   @Html.DisplayFor(modelItem => item.Title)</h4>
+                                <br />
+
+                                @Html.DisplayFor(modelItem => item.ContentTrimmed)
+                                <br />
+                                <br />
+                                <br />
+                            </a>
+                        </div>
+                    }
+                }
+
+            </div>
+
+        </section>
+    </aside>
+</div>
+<svg id="bars"></svg>
 @section Scripts{
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="~/js/home_page.js"></script>

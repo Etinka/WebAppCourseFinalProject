@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,6 +18,18 @@ namespace WebAppCourseFinalProject.Models
         [Required(ErrorMessage = "Mandatory")]
         public string Content { get; set; }
 
+        public string ContentTrimmed
+        {
+            get
+            {
+                if (Content.Length > 200)
+                {
+                    return Content.Substring(0, 200) + "...";
+                }
+                return Content;
+            }
+        }
+
         public string VideoLink { get; set; }
 
         public Writer Writer { get; set; }
@@ -24,6 +38,9 @@ namespace WebAppCourseFinalProject.Models
 
         [Required()]
         public DateTime CreatedAt { get; set; }
+
+        [NotMapped]
+        public SelectList DropDownList { get; set; }
 
         public Post()
         {
