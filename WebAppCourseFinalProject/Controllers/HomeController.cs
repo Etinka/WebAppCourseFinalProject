@@ -26,7 +26,6 @@ namespace WebAppCourseFinalProject.Controllers
             var allPosts = await _context.Post.ToListAsync();
             var viewModel = new HomeViewModel(await _context.Post.OrderByDescending(i => i.CreatedAt).Take(4).ToListAsync(),
                 await _context.Writer.ToListAsync(), await _context.Category.ToListAsync());
-            //viewModel.Writers = allPosts.ToSelectListItems(selectedId);
 
             return View(viewModel);
         }
@@ -55,19 +54,40 @@ namespace WebAppCourseFinalProject.Controllers
         }
 
         [HttpPost]
-        public string Search(IEnumerable<string> SelectedCategories, int? SelectedWriter, DateTime? start_date, DateTime? end_date)
+        public async Task<IActionResult> Search(IEnumerable<int> SelectedCategories, int? SelectedWriter, DateTime? start_date, DateTime? end_date)
         {
-            //TODO add the actual search
-            if (SelectedCategories == null)
+
+            IQueryable<Post> query = _context.Post;
+
+            //Dates
+            DateTime start = start_date ?? new DateTime(2018, 01, 01);
+            DateTime end = end_date ?? DateTime.Now;
+            query = query.Where(x => x.CreatedAt.Date <= end.Date && x.CreatedAt >= start.Date);
+
+            //Writer
+            if (SelectedWriter != null)
             {
-                return "No cities are selected";
+                query = query.Where(x => x.Writer.Id == SelectedWriter);
             }
-            else
+
+            //Categories
+            if (SelectedCategories != null)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("You selected – " + string.Join(",", SelectedCategories));
-                return sb.ToString();
+                foreach (var categoryId in SelectedCategories)
+                {
+                    //TODO: check if we can do Join here
+                    var categories = _context.Category.Where(x => x.Id == categoryId).FirstOrDefault();
+                    query = query.Where(x => x.Categories.Contains(categories));
+                }
+
             }
+
+            //Add group by
+            var posts = await query.ToListAsync();
+
+            //Todo return the actual relevant view
+            return View();
+
         }
 
         public IActionResult Error()

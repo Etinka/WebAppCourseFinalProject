@@ -13,7 +13,7 @@ namespace WebAppCourseFinalProject.Models
         public IEnumerable<Category> Categories { get; set; }
 
         public int? SelectedWriter { get; set; }
-        public IEnumerable<string> SelectedCategories { get; set; }
+        public IEnumerable<int> SelectedCategories { get; set; }
 
         public HomeViewModel(IEnumerable<Post> _Posts, IEnumerable<Writer> _Writers, IEnumerable<Category> _Categories)
         {
