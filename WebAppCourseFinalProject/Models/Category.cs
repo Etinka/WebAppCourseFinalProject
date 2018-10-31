@@ -11,5 +11,7 @@ namespace WebAppCourseFinalProject.Models
 
         public string Name { get; set; }
 
+        public string NameForDisplay { get { return "#" + Name.Trim() + " "; } }
+
     }
 }

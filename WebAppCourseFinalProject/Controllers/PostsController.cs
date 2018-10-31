@@ -34,7 +34,7 @@ namespace WebAppCourseFinalProject
                 return NotFound();
             }
 
-            var post = await _context.Post
+            var post = await _context.Post.Include(p => p.Categories).Include(p => p.Writer)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (post == null)
             {
@@ -46,9 +46,10 @@ namespace WebAppCourseFinalProject
         }
 
         // GET: Posts/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            CreatePostViewModel createPostViewModel = new CreatePostViewModel(await _context.Category.ToListAsync());
+            return View(createPostViewModel);
         }
 
         // POST: Posts/Create
@@ -56,12 +57,14 @@ namespace WebAppCourseFinalProject
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,VideoLink")] Post post)
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,VideoLink")] Post post, IEnumerable<int> SelectedCategories, string NewCategories)
         {
             if (ModelState.IsValid)
             {
-                twitterController.publishTweet("Just a try to post a new quacks");
+                twitterController.publishTweet("Just a try to post a new quacks");            
+
                 post.Writer = await getWriterAsync();
+                post.Categories = PrepareCategories(SelectedCategories, NewCategories);
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -69,6 +72,44 @@ namespace WebAppCourseFinalProject
             return View(post);
         }
 
+        private List<Category> PrepareCategories(IEnumerable<int> SelectedCategories, string NewCategories)
+        {
+            List<Category> categories = new List<Category>();
+            //Add existing categories
+            if (SelectedCategories != null)
+            {
+                foreach (var categoryId in SelectedCategories)
+                {
+                    //TODO: check if we can do Join here
+                    var category = _context.Category.Where(x => x.Id == categoryId).FirstOrDefault();
+                    categories.Add(category);
+                }
+            }
+
+            //Going through New NewCategories
+            if (!String.IsNullOrWhiteSpace(NewCategories))
+            {
+                var newCategoriesArray = NewCategories.Split(',');
+                foreach (var name in newCategoriesArray)
+                {
+                    var categoryExists = _context.Category.Where(x => x.Name == name.Trim()).FirstOrDefault();
+                    if(categoryExists != null)
+                    {
+                        categories.Add(categoryExists);
+                    }
+                    else
+                    {
+                        Category category = new Category();
+                        category.Name = name.Trim();
+                        _context.Add(category);
+                        _context.SaveChanges();
+                        categories.Add(category);
+                    }
+                }
+            }
+
+            return categories.Distinct().ToList();
+        }
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

@@ -2,20 +2,28 @@
 
 
 <div>
-    <dl class="dl-horizontal">
-        <h2> @Html.DisplayFor(model => model.Title)</h2>
-        @Html.DisplayFor(model => model.CreatedAt)
-        <br />
-        <br />
-        @Html.DisplayFor(model => model.Content)
+    <h2> @Html.DisplayFor(model => model.Title)</h2>
+    <h3> Written by: @Html.DisplayFor(model => model.Writer.DisplayName)</h3>
+    @Html.DisplayFor(model => model.CreatedAt)
+    <br />
+    <br />
+    @Html.DisplayFor(model => model.Content)
+    <br />
+    <br />
+    @if (@Model.Categories.Count() > 0)
+    {
+        <h5>Categories: </h5>}
 
+    @foreach (var item in Model.Categories)
+    {
+        @Html.DisplayFor(m => item.NameForDisplay)
+    }
 
-    </dl>
 </div>
 
 <!-- TODO need to hide when there is no link -->
 <div>
-    <iframe id="video_link" width="420" height="315"
+    <iframe id="video_link" 
             src="https://www.youtube.com/embed/Mh85R-S-dh8"></iframe>
 </div>
 
@@ -29,8 +37,8 @@
 }
 @section Scripts {
 
-    <script  type="text/javascript">
-       
+    <script type="text/javascript">
+
         $(document).ready(function () {
             //Showing or hiding the edit and list option based on admin or not
         var isAdmin = @ViewData["isAdmin"] ;
