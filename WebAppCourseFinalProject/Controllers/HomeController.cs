@@ -45,6 +45,14 @@ namespace WebAppCourseFinalProject.Controllers
             return View();
         }
 
+        public IActionResult Find()
+        {
+            ViewData["Message"] = "Search For your favorite ducks store!";
+            ViewBag.Current = "Find";
+
+            return View();
+        }
+
         public IActionResult Login()
         {
             ViewBag.Current = "Login";
