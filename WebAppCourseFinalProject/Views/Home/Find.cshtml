@@ -14,14 +14,24 @@
         var map = new Microsoft.Maps.Map(document.getElementById('storesMap'), {
             /* No need to set credentials if already passed in URL */
             center: new Microsoft.Maps.Location(32.080285, 34.767669),
-            zoom: 10,
+            zoom: 15,
             mapTypeId: Microsoft.Maps.MapTypeId.road
         });
 
-        var testStore = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(32.075121, 34.774310), null);
+
+        var testStore = new Microsoft.Maps.Pushpin(
+            new Microsoft.Maps.Location(32.075121, 34.774310),
+            {
+                title: 'Test Store',
+                subTitle: 'Tel Aviv Center',
+                icon: 'http://localhost:37787/images/duck.svg',
+                anchor: new Microsoft.Maps.Point(10, 40)
+            }
+        );
         var layer = new Microsoft.Maps.Layer();
         layer.add(testStore);
         map.layers.insert(layer);
+
     }
 </script>
 <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AiNwCKOudGFQsyAwQ5HsrlEtXctlb0mEMMz_cJQGntz2Gg0QJiH8Gz6bxtwcVLSd&callback=loadMapScenario' async defer></script>
