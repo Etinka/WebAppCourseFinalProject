@@ -48,6 +48,8 @@ namespace WebAppCourseFinalProject.Controllers
         public IActionResult Find()
         {
             ViewData["Message"] = "Search For your favorite ducks store!";
+            ViewData["TestStoreLan"] = 32.075121;
+            ViewData["TestStoreLon"] = 34.774310;
 
             return View();
         }

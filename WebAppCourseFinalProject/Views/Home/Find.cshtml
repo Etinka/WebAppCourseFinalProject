@@ -18,9 +18,9 @@
             mapTypeId: Microsoft.Maps.MapTypeId.road
         });
 
-
+        
         var testStore = new Microsoft.Maps.Pushpin(
-            new Microsoft.Maps.Location(32.075121, 34.774310),
+            new Microsoft.Maps.Location(@ViewData["TestStoreLan"], @ViewData["TestStoreLon"]),
             {
                 title: 'Test Store',
                 subTitle: 'Tel Aviv Center',
