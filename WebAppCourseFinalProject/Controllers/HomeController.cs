@@ -48,7 +48,9 @@ namespace WebAppCourseFinalProject.Controllers
         public IActionResult Find()
         {
             ViewData["Message"] = "Search For your favorite ducks store!";
-            ViewBag.Current = "Find";
+            ViewBag.Current = "Find"
+
+            ViewData["Map"] = ;
 
             return View();
         }

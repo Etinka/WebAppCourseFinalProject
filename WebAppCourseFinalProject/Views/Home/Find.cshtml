@@ -1,7 +1,27 @@
 ﻿@{
     ViewData["Title"] = "Find your quacks";
+
+
 }
 <h2>@ViewData["Title"].</h2>
 <h3>@ViewData["Message"]</h3>
-
 <p>You can search for your duck store nearby</p>
+
+
+<div id='storesMap' style='width: 50vw; height: 80vh;'></div>
+<script type='text/javascript'>
+    function loadMapScenario() {
+        var map = new Microsoft.Maps.Map(document.getElementById('storesMap'), {
+            /* No need to set credentials if already passed in URL */
+            center: new Microsoft.Maps.Location(32.080285, 34.767669),
+            zoom: 10,
+            mapTypeId: Microsoft.Maps.MapTypeId.road
+        });
+
+        var testStore = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(32.075121, 34.774310), null);
+        var layer = new Microsoft.Maps.Layer();
+        layer.add(testStore);
+        map.layers.insert(layer);
+    }
+</script>
+<script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AiNwCKOudGFQsyAwQ5HsrlEtXctlb0mEMMz_cJQGntz2Gg0QJiH8Gz6bxtwcVLSd&callback=loadMapScenario' async defer></script>
