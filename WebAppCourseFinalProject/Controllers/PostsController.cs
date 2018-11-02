@@ -61,9 +61,8 @@ namespace WebAppCourseFinalProject
         {
             if (ModelState.IsValid)
             {
-                twitterController.publishTweet("Just a try to post a new quacks");            
-
                 post.Writer = await getWriterAsync();
+                twitterController.publishTweet(post.Writer.DisplayName + " just posted a new quack titled " + post.Title);
                 post.Categories = PrepareCategories(SelectedCategories, NewCategories);
                 _context.Add(post);
                 await _context.SaveChangesAsync();
