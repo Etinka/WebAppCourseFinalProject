@@ -63,14 +63,15 @@ namespace WebAppCourseFinalProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Search(IEnumerable<int> SelectedCategories, int? SelectedWriter, DateTime? start_date, DateTime? end_date)
+        public async Task<IActionResult> Search(IEnumerable<int> SelectedCategories, int? SelectedWriter,
+            DateTime? StartDate, DateTime? EndDate, string FreeSearchText)
         {
 
             IQueryable<Post> query = _context.Post;
 
             //Dates
-            DateTime start = start_date ?? new DateTime(1900, 01, 01);
-            DateTime end = end_date ?? DateTime.Now;
+            DateTime start = StartDate ?? new DateTime(1900, 01, 01);
+            DateTime end = EndDate ?? DateTime.Now;
             query = query.Where(x => x.CreatedAt.Date <= end.Date && x.CreatedAt >= start.Date);
 
             //Writer
@@ -91,12 +92,18 @@ namespace WebAppCourseFinalProject.Controllers
 
             }
 
+            //Free text
+            if (FreeSearchText != null)
+            {
+                query = query.Where(p => p.Title.ToLower().Contains(FreeSearchText.ToLower()) || p.Content.ToLower().Contains(FreeSearchText.ToLower()));
+            }
+
             var viewModel = new SearchViewModel();
 
             //Add group by 
             if (SelectedWriter == null && SelectedCategories == null)
             {
-                var groupedPosts =  await query.GroupBy(p => p.Writer.DisplayName).ToListAsync();     
+                var groupedPosts = await query.GroupBy(p => p.Writer.DisplayName).ToListAsync();
                 viewModel.GroupedPosts = groupedPosts;
             }
             else
