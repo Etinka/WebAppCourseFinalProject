@@ -1,4 +1,6 @@
-﻿@{
+﻿@model WebAppCourseFinalProject.Models.Branch
+@using System.Web;
+@{
     ViewData["Title"] = "Find your quacks";
 
 
@@ -9,7 +11,8 @@
 
 
 <div id='storesMap' style='width: 50vw; height: 80vh;'></div>
-<script type='text/javascript'>
+@section Scripts{
+    <script type='text/javascript'>
     function loadMapScenario() {
         let map = new Microsoft.Maps.Map(document.getElementById('storesMap'), {
             /* No need to set credentials if already passed in URL */
@@ -22,8 +25,9 @@
         //let storeLocations = @ViewData["locations"];
         //let storeNames = @ViewData["names"];
 
+        var stores = @Raw(Json.Encode(Model));
         if (storeLocations!= null && storeLocations.length > 0) {
-            
+
             for (var i = 0; i < storeLocations.length; i += 2) {
                 let store = new Microsoft.Maps.Pushpin(
                     new Microsoft.Maps.Location(storeLocations[i], storeLocations[i + 1]),
@@ -39,5 +43,6 @@
             map.layers.insert(layer);
         }
     }
-</script>
-<script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AiNwCKOudGFQsyAwQ5HsrlEtXctlb0mEMMz_cJQGntz2Gg0QJiH8Gz6bxtwcVLSd&callback=loadMapScenario' async defer></script>
+    </script>
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AiNwCKOudGFQsyAwQ5HsrlEtXctlb0mEMMz_cJQGntz2Gg0QJiH8Gz6bxtwcVLSd&callback=loadMapScenario' async defer></script>
+}

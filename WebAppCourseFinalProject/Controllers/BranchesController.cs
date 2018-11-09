@@ -5,17 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using WebAppCourseFinalProject.Controllers;
 using WebAppCourseFinalProject.Models;
 
 namespace WebAppCourseFinalProject
 {
-    public class BranchesController : Controller
+    public class BranchesController : BaseController
     {
-        private readonly UserContext _context;
 
-        public BranchesController(UserContext context)
+        public BranchesController(UserContext context): base(context)
         {
-            _context = context;
         }
 
         // GET: Branches
