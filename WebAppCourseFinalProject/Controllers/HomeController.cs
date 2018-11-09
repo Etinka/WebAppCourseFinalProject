@@ -48,23 +48,7 @@ namespace WebAppCourseFinalProject.Controllers
         {
             ViewData["Message"] = "Search For your favorite ducks store!";
 
-            List<Branch> branches = await _context.Branch.ToListAsync();
-            var branchesLocations = new double[1];
-            var branchesNames = new String[branches.Count * 2];
-
-            for(var i = 0; i<branches.Count; i++)
-            {
-                branchesLocations.Append(branches[i].Latitude);
-                branchesLocations.Append(branches[i].Longtitude);
-
-                branchesNames.Append(branches[i].Title);
-                branchesNames.Append(branches[i].Subtitle);
-            }
-
-            ViewData["Locations"] = branchesLocations;
-            ViewData["Names"] = branchesNames;
-
-            return View(branches);
+            return View(await _context.Branch.ToListAsync());
         }
 
         public IActionResult Login()
