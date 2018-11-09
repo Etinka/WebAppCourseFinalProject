@@ -35,3 +35,20 @@
     <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
     <a asp-action="Logout" asp-controller="Users">Logout</a>
 </div>
+
+
+
+<canvas id="myCanvas" width="400" height="200">
+    Your browser does not support the canvas element.
+</canvas>
+@section Scripts {
+    <script>
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+        ctx.font = "30px Comic Sans MS";
+        ctx.fillStyle = "red";
+        ctx.textAlign = "center";
+        ctx.fillText("Rubber Duckies RULE!!!", canvas.width / 2, canvas.height / 2);
+    </script>
+}
+
