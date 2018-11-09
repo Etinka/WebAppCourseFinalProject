@@ -25,7 +25,6 @@
         //let storeLocations = @ViewData["locations"];
         //let storeNames = @ViewData["names"];
 
-        var stores = @Raw(Json.Encode(Model));
         if (storeLocations!= null && storeLocations.length > 0) {
 
             for (var i = 0; i < storeLocations.length; i += 2) {
