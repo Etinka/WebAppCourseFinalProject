@@ -37,6 +37,14 @@ namespace WebAppCourseFinalProject.Controllers
             HttpContext.Session.SetInt32("Admin", admin ? 1 : 0);
         }
 
+        protected void setUserLoggedOut()
+        {
+            HttpContext.Session.SetInt32("UserId", -1);
+            HttpContext.Session.SetInt32("LoggedIn", 0);
+            HttpContext.Session.SetString("UserName", "");
+            HttpContext.Session.SetInt32("Admin", 0);
+        }
+
         protected async Task<Writer> getWriterAsync(User user = null)
         {
             var id = 0;

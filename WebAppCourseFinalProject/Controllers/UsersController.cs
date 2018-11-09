@@ -167,6 +167,7 @@ namespace WebAppCourseFinalProject
             return View(user);
         }
 
+
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -206,6 +207,13 @@ namespace WebAppCourseFinalProject
             }
             return View(user);
         }
+
+        public IActionResult Logout()
+        {
+            setUserLoggedOut();
+            return RedirectToAction("Index", "Home");
+        }
+
 
         private bool UserExists(int id)
         {

@@ -165,6 +165,12 @@ namespace WebAppCourseFinalProject
         {
             return View(await _context.User.ToListAsync());
         }
+
+        public IActionResult Logout()
+        {
+            setUserLoggedOut();
+            return RedirectToAction("Index", "Home");
+        }
     }
 
   
