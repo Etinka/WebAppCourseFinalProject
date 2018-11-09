@@ -21,5 +21,6 @@ namespace WebAppCourseFinalProject.Models
         public DbSet<WebAppCourseFinalProject.Models.Writer> Writer { get; set; }
 
         public DbSet<WebAppCourseFinalProject.Models.Category> Category { get; set; }
+        public DbSet<WebAppCourseFinalProject.Models.Branch> Branch { get; set; }
     }
 }

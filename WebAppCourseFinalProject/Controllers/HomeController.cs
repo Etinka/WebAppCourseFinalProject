@@ -17,7 +17,6 @@ namespace WebAppCourseFinalProject.Controllers
     {
         public HomeController(UserContext context) : base(context)
         {
-
         }
 
         public async Task<IActionResult> Index()
@@ -45,11 +44,25 @@ namespace WebAppCourseFinalProject.Controllers
             return View();
         }
 
-        public IActionResult Find()
+        public async Task<IActionResult> Find()
         {
             ViewData["Message"] = "Search For your favorite ducks store!";
-            ViewData["TestStoreLan"] = 32.075121;
-            ViewData["TestStoreLon"] = 34.774310;
+
+            List<Branch> branches = await _context.Branch.ToListAsync();
+            var branchesLocations = new float[1];
+            var branchesNames = new String[branches.Count * 2];
+
+            for(var i = 0; i<branches.Count; i++)
+            {
+                branchesLocations.Append(branches[i].Latitude);
+                branchesLocations.Append(branches[i].Longtitude);
+
+                branchesNames.Append(branches[i].Title);
+                branchesNames.Append(branches[i].Subtitle);
+            }
+
+            ViewData["Locations"] = branchesLocations;
+            ViewData["Names"] = branchesNames;
 
             return View();
         }

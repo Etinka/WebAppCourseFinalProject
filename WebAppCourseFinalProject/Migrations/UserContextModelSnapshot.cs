@@ -19,6 +19,25 @@ namespace WebAppCourseFinalProject.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("WebAppCourseFinalProject.Models.Branch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<float>("Latitude");
+
+                    b.Property<float>("Longtitude");
+
+                    b.Property<string>("Subtitle");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Branch");
+                });
+
             modelBuilder.Entity("WebAppCourseFinalProject.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -59,6 +78,19 @@ namespace WebAppCourseFinalProject.Migrations
                     b.HasIndex("WriterId");
 
                     b.ToTable("Post");
+                });
+
+            modelBuilder.Entity("WebAppCourseFinalProject.Models.Store", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Store");
                 });
 
             modelBuilder.Entity("WebAppCourseFinalProject.Models.User", b =>
