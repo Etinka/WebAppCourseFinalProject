@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebAppCourseFinalProject.Models.Post>
+﻿@model IEnumerable<WebAppCourseFinalProject.Models.WritersPostViewModel>
 
 @{
     ViewData["Title"] = "My Posts";
@@ -14,10 +14,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.post.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Content)
+                @Html.DisplayNameFor(model => model.post.Content)
             </th>
           
         </tr>
@@ -27,16 +27,16 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Title)
+                    @Html.DisplayFor(modelItem => item.post.Title)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ContentTrimmed)
+                    @Html.DisplayFor(modelItem => item.post.ContentTrimmed)
                 </td>
             
                 <td>
-                    <a asp-controller="Posts" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-controller="Posts" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-controller="Posts" asp-action="Edit" asp-route-id="@item.post.Id">Edit</a> |
+                    <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.post.Id">Details</a> |
+                    <a asp-controller="Posts" asp-action="Delete" asp-route-id="@item.post.Id">Delete</a>
                 </td>
             </tr>
         }

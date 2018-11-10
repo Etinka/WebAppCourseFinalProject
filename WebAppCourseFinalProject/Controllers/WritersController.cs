@@ -126,7 +126,7 @@ namespace WebAppCourseFinalProject
                 .FirstOrDefaultAsync(m => m.User.ID == id);
 
             var user = await _context.User.FirstOrDefaultAsync(m => m.ID == id);
-            
+
             if (writer == null && user == null)
             {
                 return NotFound();
@@ -140,17 +140,17 @@ namespace WebAppCourseFinalProject
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var writer = await _context.Writer.Where(w=>w.User.ID == id).FirstOrDefaultAsync();
+            var writer = await _context.Writer.Where(w => w.User.ID == id).FirstOrDefaultAsync();
             var user = await _context.User.FindAsync(id);
 
-            if (writer == null )
+            if (writer == null)
             {
                 _context.User.Remove(user);
             }
             else
             {
                 var query = await _context.Post.Include(p => p.Writer).Where(p => p.Writer.Id == writer.Id).OrderByDescending(p => p.CreatedAt).ToListAsync();
-                  
+
                 foreach (var item in query)
                 {
                     var post = await _context.Post.FindAsync(item.Id);
@@ -174,20 +174,25 @@ namespace WebAppCourseFinalProject
 
         public IActionResult AddPost(int? id)
         {
-            return RedirectToAction("Create", "Posts" );
+            return RedirectToAction("Create", "Posts");
         }
 
-        public async Task<IActionResult> WriterPosts(int id)
+        public IActionResult WriterPosts(int id)
         {
-            var query = _context.Post.Include(p => p.Writer).Where(p => p.Writer.Id == id).OrderByDescending(p => p.CreatedAt).ToListAsync();
-               
-            return View(await query);
+
+            var res = _context.Post.Join(_context.Writer, 
+                 post => post.Writer.Id,
+                 writer => writer.Id,   
+                 (post, writer) => new WritersPostViewModel { post = post, writer = writer }) 
+                 .Where(postAndwriter => postAndwriter.post.Writer.Id == id).AsEnumerable().OrderByDescending(postAndwriter => postAndwriter.post.CreatedAt);
+
+            return View( res);
         }
 
         public async Task<IActionResult> UsersList()
         {
             ViewData["CurrentId"] = getUserId();
-            return View(await _context.User.Where(w=> w.FirstName != Consts.ANONYMOUS_USER_NAME).ToListAsync());
+            return View(await _context.User.Where(w => w.FirstName != Consts.ANONYMOUS_USER_NAME).ToListAsync());
         }
 
         public IActionResult Logout()
@@ -197,5 +202,5 @@ namespace WebAppCourseFinalProject
         }
     }
 
-  
+
 }
