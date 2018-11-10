@@ -30,11 +30,11 @@ namespace WebAppCourseFinalProject.Controllers
             //create an anonymous user as writer in order to be able to delete a writer.
             //when we delete a writer- all the posts that he wrote changes to a writer named "anonymous"
             var anonymousWriter = await _context.Writer.Where(w => w.DisplayName == Consts.ANONYMOUS_USER_NAME).FirstOrDefaultAsync();
-            if(anonymousWriter == null)
+            if (anonymousWriter == null)
             {
                 var anonymousUser = await _context.User.Where(w => w.FirstName == Consts.ANONYMOUS_USER_NAME).FirstOrDefaultAsync();
 
-                if(anonymousUser == null)
+                if (anonymousUser == null)
                 {
                     anonymousUser = new User();
                     anonymousUser.FirstName = Consts.ANONYMOUS_USER_NAME;
@@ -60,6 +60,12 @@ namespace WebAppCourseFinalProject.Controllers
             ViewBag.Current = "About";
 
             return View();
+        }
+
+        public JsonResult AboutInfo()
+        {
+            About about = new About("this is an awesome blog about rubber duckies!", "College of management", "ducks@duckesrule.com");
+            return Json(about);
         }
 
         public IActionResult Contact()

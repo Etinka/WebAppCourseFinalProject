@@ -1,7 +1,43 @@
 ﻿@{
     ViewData["Title"] = "About";
 }
-<h2>@ViewData["Title"].</h2>
-<h3>@ViewData["Message"]</h3>
 
-<p>We will add general information about us.</p>
+<h2 id="divTitle"></h2>
+<br />
+<h4 id="divAddress"></h4>
+
+<h4 id="divEmail" ></h4>
+
+
+
+@section Scripts{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            loadData();
+        });
+        //Load Data function
+        function loadData() {
+            $.ajax({
+                url: "/Home/AboutInfo",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    debugger
+                    var  html = '<a href="mailto:' + result.email + '">' + result.email + '</a><br />';
+                    $("#divTitle").html(result.title);
+                    $("#divAddress").html('address: ' + result.address);
+                    $("#divEmail").html(html);
+
+                    debugger
+                  
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    </script>
+}
