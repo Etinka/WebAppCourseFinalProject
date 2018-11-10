@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using WebAppCourseFinalProject.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace WebAppCourseFinalProject.Controllers
 {
@@ -98,5 +99,10 @@ namespace WebAppCourseFinalProject.Controllers
             }
             return false;
         }
+
+        protected static ICollection<PostCategory> GetPostTags(object entity)
+         => (ICollection<PostCategory>)entity.GetType().GetRuntimeProperties()
+            .Single(e => e.Name == "PostTags")
+            .GetValue(entity);
     }
 }
