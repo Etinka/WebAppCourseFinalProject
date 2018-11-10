@@ -155,9 +155,8 @@ namespace WebAppCourseFinalProject
 
         public async Task<IActionResult> WriterPosts(int id)
         {
-            var query = (from post in _context.Post
-                         where post.Writer.Id == id
-                         select post).ToListAsync();
+            var query = _context.Post.Include(p => p.Writer).Where(p => p.Writer.Id == id).OrderByDescending(p => p.CreatedAt).ToListAsync();
+               
             return View(await query);
         }
 

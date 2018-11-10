@@ -109,6 +109,7 @@ namespace WebAppCourseFinalProject
 
             return categories.Distinct().ToList();
         }
+       
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -117,12 +118,21 @@ namespace WebAppCourseFinalProject
                 return NotFound();
             }
 
-            var post = await _context.Post.FindAsync(id);
+            var post = await _context.Post.Include(p => p.Categories).FirstOrDefaultAsync(p => p.Id == id);
             if (post == null)
             {
                 return NotFound();
             }
-            return View(post);
+            CreatePostViewModel createPostViewModel = new CreatePostViewModel(await _context.Category.ToListAsync());
+            createPostViewModel.Post = post;
+            List<int> cat = new List<int>();
+
+            foreach (var item in post.Categories)
+            {
+                cat.Add(item.Id);
+            }
+            createPostViewModel.SelectedCategories = cat;
+            return View(createPostViewModel);
         }
 
         // POST: Posts/Edit/5
@@ -130,7 +140,7 @@ namespace WebAppCourseFinalProject
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,VideoLink")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,VideoLink")] Post post, IEnumerable<int> SelectedCategories, string NewCategories)
         {
             if (id != post.Id)
             {
@@ -141,6 +151,7 @@ namespace WebAppCourseFinalProject
             {
                 try
                 {
+                    post.Categories = PrepareCategories(SelectedCategories, NewCategories);
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }

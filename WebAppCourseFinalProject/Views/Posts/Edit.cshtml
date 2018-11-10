@@ -1,38 +1,49 @@
-﻿@model WebAppCourseFinalProject.Models.Post
+﻿@model WebAppCourseFinalProject.Models.CreatePostViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 
-<h4>Post</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VideoLink" class="control-label"></label>
-                <input asp-for="VideoLink" class="form-control" />
-                <span asp-validation-for="VideoLink" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
-    </div>
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Post.Id" />
+
+        <div class="form-group">
+            <label asp-for="Post.Title" class="control-label"></label>
+            <input asp-for="Post.Title" class="form-control" id="inputdefault" />
+            <span asp-validation-for="Post.Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Post.Content" class="control-label"></label>
+            <br />
+            <textarea asp-for="Post.Content" name="Post.Content" placeholder="Write something.." class="overrideheight"></textarea>
+            <span asp-validation-for="Post.Content" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Post.VideoLink" class="control-label"></label>
+            <input asp-for="Post.VideoLink" class="form-control" />
+            <span asp-validation-for="Post.VideoLink" class="text-danger"></span>
+        </div>
+        <label>Select Categories:</label>
+        <br />
+        @Html.ListBoxFor(m => m.SelectedCategories, new SelectList(Model.Categories, "Id", "Name"), new { size = 5 })
+        <br />
+        <div class="form-group">
+            <br />
+            <label asp-for="NewCategories" class="control-label"></label>
+            <input asp-for="NewCategories" class="form-control" />
+            <span asp-validation-for="NewCategories" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </form>
 </div>
 
 <div>
@@ -41,4 +52,8 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@section Styles{
+    <link href="~/css/post.css" rel="stylesheet" />
 }
