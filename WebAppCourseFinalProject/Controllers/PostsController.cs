@@ -32,14 +32,15 @@ namespace WebAppCourseFinalProject
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
+
             }
 
             var post = await _context.Post.Include("PostTags.Category").Include(p => p.Writer)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (post == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
             ViewData["isAdmin"] = isAdmin() ? 1 : 0;
 
@@ -120,14 +121,14 @@ namespace WebAppCourseFinalProject
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             var post = await _context.Post.Include("PostTags.Category").
                 FirstOrDefaultAsync(p => p.Id == id);
             if (post == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
             CreatePostViewModel createPostViewModel = new CreatePostViewModel(await _context.Category.ToListAsync());
             createPostViewModel.Post = post;
@@ -150,7 +151,7 @@ namespace WebAppCourseFinalProject
         {
             if (id != post.Id)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             if (ModelState.IsValid)
@@ -181,7 +182,7 @@ namespace WebAppCourseFinalProject
                 {
                     if (!PostExists(post.Id))
                     {
-                        return NotFound();
+                        return RedirectToAction("Error", "Error");
                     }
                     else
                     {
@@ -220,14 +221,14 @@ namespace WebAppCourseFinalProject
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             var post = await _context.Post
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (post == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             return View(post);

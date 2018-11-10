@@ -29,14 +29,14 @@ namespace WebAppCourseFinalProject
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             var category = await _context.Category
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             return View(category);
@@ -69,13 +69,13 @@ namespace WebAppCourseFinalProject
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             var category = await _context.Category.FindAsync(id);
             if (category == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
             return View(category);
         }
@@ -89,7 +89,7 @@ namespace WebAppCourseFinalProject
         {
             if (id != category.Id)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             if (ModelState.IsValid)
@@ -103,7 +103,7 @@ namespace WebAppCourseFinalProject
                 {
                     if (!CategoryExists(category.Id))
                     {
-                        return NotFound();
+                        return RedirectToAction("Error", "Error");
                     }
                     else
                     {
@@ -120,14 +120,14 @@ namespace WebAppCourseFinalProject
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             var category = await _context.Category
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             return View(category);

@@ -28,14 +28,14 @@ namespace WebAppCourseFinalProject
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             var branch = await _context.Branch
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (branch == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             return View(branch);
@@ -68,13 +68,13 @@ namespace WebAppCourseFinalProject
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             var branch = await _context.Branch.FindAsync(id);
             if (branch == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
             return View(branch);
         }
@@ -88,7 +88,7 @@ namespace WebAppCourseFinalProject
         {
             if (id != branch.Id)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             if (ModelState.IsValid)
@@ -102,7 +102,7 @@ namespace WebAppCourseFinalProject
                 {
                     if (!BranchExists(branch.Id))
                     {
-                        return NotFound();
+                        return RedirectToAction("Error", "Error");
                     }
                     else
                     {
@@ -119,14 +119,14 @@ namespace WebAppCourseFinalProject
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             var branch = await _context.Branch
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (branch == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             return View(branch);

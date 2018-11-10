@@ -53,7 +53,7 @@ namespace WebAppCourseFinalProject
 
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             var user = await _context.User.SingleOrDefaultAsync(m => m.ID == id);
@@ -97,13 +97,13 @@ namespace WebAppCourseFinalProject
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             var user = await _context.User.SingleOrDefaultAsync(m => m.ID == id);
             if (user == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             ViewBag.ShowDiv = isAdmin();
@@ -117,7 +117,7 @@ namespace WebAppCourseFinalProject
         {
             if (id != user.ID)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             if (ModelState.IsValid)
@@ -131,7 +131,7 @@ namespace WebAppCourseFinalProject
                 {
                     if (!UserExists(user.ID))
                     {
-                        return NotFound();
+                        return RedirectToAction("Error", "Error");
                     }
                     else
                     {
@@ -154,14 +154,14 @@ namespace WebAppCourseFinalProject
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             var user = await _context.User
                 .SingleOrDefaultAsync(m => m.ID == id);
             if (user == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             return View(user);

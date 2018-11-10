@@ -28,14 +28,14 @@ namespace WebAppCourseFinalProject
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             var writer = await _context.Writer
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (writer == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             return View(writer);
@@ -68,13 +68,13 @@ namespace WebAppCourseFinalProject
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             var writer = await _context.Writer.FindAsync(id);
             if (writer == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
             return View(writer);
         }
@@ -88,7 +88,7 @@ namespace WebAppCourseFinalProject
         {
             if (id != writer.Id)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             if (ModelState.IsValid)
@@ -102,7 +102,7 @@ namespace WebAppCourseFinalProject
                 {
                     if (!WriterExists(writer.Id))
                     {
-                        return NotFound();
+                        return RedirectToAction("Error", "Error");
                     }
                     else
                     {
@@ -119,7 +119,7 @@ namespace WebAppCourseFinalProject
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             var writer = await _context.Writer
@@ -129,7 +129,7 @@ namespace WebAppCourseFinalProject
 
             if (writer == null && user == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Error");
             }
 
             return View(writer);
