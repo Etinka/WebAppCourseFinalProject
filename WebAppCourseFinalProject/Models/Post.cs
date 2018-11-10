@@ -34,13 +34,16 @@ namespace WebAppCourseFinalProject.Models
 
         public Writer Writer { get; set; }
 
-        public ICollection<Category> Categories { get; set; }//many2many - many category, many products
+        public ICollection<PostCategory> PostTags { get; } = new List<PostCategory>();
 
         [Required()]
         public DateTime CreatedAt { get; set; }
 
         [NotMapped]
         public SelectList DropDownList { get; set; }
+
+        [NotMapped]
+        public IEnumerable<Category> Categories => PostTags.Select(e => e.Category);
 
         public Post()
         {

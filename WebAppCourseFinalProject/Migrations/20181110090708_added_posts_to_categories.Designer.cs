@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAppCourseFinalProject.Models;
 
 namespace WebAppCourseFinalProject.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20181110090708_added_posts_to_categories")]
+    partial class added_posts_to_categories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,7 +48,11 @@ namespace WebAppCourseFinalProject.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<int?>("PostId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PostId");
 
                     b.ToTable("Category");
                 });
@@ -131,6 +137,13 @@ namespace WebAppCourseFinalProject.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Writer");
+                });
+
+            modelBuilder.Entity("WebAppCourseFinalProject.Models.Category", b =>
+                {
+                    b.HasOne("WebAppCourseFinalProject.Models.Post")
+                        .WithMany("Categories")
+                        .HasForeignKey("PostId");
                 });
 
             modelBuilder.Entity("WebAppCourseFinalProject.Models.Post", b =>
