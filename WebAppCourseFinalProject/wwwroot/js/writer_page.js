@@ -72,7 +72,7 @@ function DrawPieChart(categories) {
 
     var pie = d3.pie()
         .value(function (d) { return d.posts })
-
+        
     var slices = pie(posts);
 
     var arc = d3.arc()
@@ -85,6 +85,7 @@ function DrawPieChart(categories) {
     var svg = d3.select('svg#pie')
         .append('svg')
         .attr("class", "pie");
+
     var g = svg.append('g')
         .attr('transform', 'translate(200, 75)');
 
@@ -100,7 +101,6 @@ function DrawPieChart(categories) {
 
     arcGraph.append("text")
         .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
-
         .attr("dy", "0.35em")
         .text(function (d) { return d.data.posts });
     // building a legend is as simple as binding
@@ -115,7 +115,6 @@ function DrawPieChart(categories) {
         .text(function (d) { return '• ' + d.data.category; })
         .attr('fill', function (d) { return color(d.data.category); })
         .attr('y', function (d, i) { return 20 * (i + 1); })
-
 }
 
 function DrawGraph(categories) {

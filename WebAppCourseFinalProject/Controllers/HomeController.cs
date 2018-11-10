@@ -27,6 +27,30 @@ namespace WebAppCourseFinalProject.Controllers
             var viewModel = new HomeViewModel(await _context.Post.OrderByDescending(i => i.CreatedAt).Take(4).ToListAsync(),
                 await _context.Writer.ToListAsync(), await _context.Category.ToListAsync());
 
+            //create an anonymous user as writer in order to be able to delete a writer.
+            //when we delete a writer- all the posts that he wrote changes to a writer named "anonymous"
+            var anonymousWriter = await _context.Writer.Where(w => w.DisplayName == Consts.ANONYMOUS_USER_NAME).FirstOrDefaultAsync();
+            if(anonymousWriter == null)
+            {
+                var anonymousUser = await _context.User.Where(w => w.FirstName == Consts.ANONYMOUS_USER_NAME).FirstOrDefaultAsync();
+
+                if(anonymousUser == null)
+                {
+                    anonymousUser = new User();
+                    anonymousUser.FirstName = Consts.ANONYMOUS_USER_NAME;
+                    anonymousUser.LastName = Consts.ANONYMOUS_USER_NAME;
+                    anonymousUser.Email = "anonymous@gmail.com";
+                    anonymousUser.Password = "123456789";
+                    anonymousUser.IsAdmin = true;
+                }
+
+                anonymousWriter = new Writer();
+                anonymousWriter.DisplayName = Consts.ANONYMOUS_USER_NAME;
+                anonymousWriter.User = anonymousUser;
+                _context.Add(anonymousWriter);
+                await _context.SaveChangesAsync();
+            }
+
             return View(viewModel);
         }
 

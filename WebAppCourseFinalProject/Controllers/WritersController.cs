@@ -123,8 +123,11 @@ namespace WebAppCourseFinalProject
             }
 
             var writer = await _context.Writer
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (writer == null)
+                .FirstOrDefaultAsync(m => m.User.ID == id);
+
+            var user = await _context.User.FirstOrDefaultAsync(m => m.ID == id);
+            
+            if (writer == null && user == null)
             {
                 return NotFound();
             }
@@ -137,8 +140,29 @@ namespace WebAppCourseFinalProject
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var writer = await _context.Writer.FindAsync(id);
-            _context.Writer.Remove(writer);
+            var writer = await _context.Writer.Where(w=>w.User.ID == id).FirstOrDefaultAsync();
+            var user = await _context.User.FindAsync(id);
+
+            if (writer == null )
+            {
+                _context.User.Remove(user);
+            }
+            else
+            {
+                var query = await _context.Post.Include(p => p.Writer).Where(p => p.Writer.Id == writer.Id).OrderByDescending(p => p.CreatedAt).ToListAsync();
+                  
+                foreach (var item in query)
+                {
+                    var post = await _context.Post.FindAsync(item.Id);
+                    var newWriter = await _context.Writer.FirstOrDefaultAsync(m => m.DisplayName == Consts.ANONYMOUS_USER_NAME);
+
+                    post.Writer = newWriter;
+                    _context.Update(post);
+                }
+                _context.Writer.Remove(writer);
+                _context.User.Remove(user);
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -162,7 +186,8 @@ namespace WebAppCourseFinalProject
 
         public async Task<IActionResult> UsersList()
         {
-            return View(await _context.User.ToListAsync());
+            ViewData["CurrentId"] = getUserId();
+            return View(await _context.User.Where(w=> w.FirstName != Consts.ANONYMOUS_USER_NAME).ToListAsync());
         }
 
         public IActionResult Logout()
