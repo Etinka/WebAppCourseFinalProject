@@ -18,17 +18,13 @@ namespace WebAppCourseFinalProject.Controllers
         [HttpGet("post-count")]
         public async Task<IActionResult> GetCategoryPostsCount()
         {
-            //TODO: Get data from DB
-            // var posts = await _context.Post.Include(p => p.Categories).ToListAsync();        
+           //Get info from DB and convert CategoryID to Name 
+           var postCountPerCategory =  _context.PostCategory.GroupBy(x => x.Category.Name)
+                   .Select(g => new { g.Key, Count = g.Count() });
 
-            var dic = new Dictionary<string, int>
-            {
-                { "red-duck", 250 },  // category name ,  post count in category
-                { "white-duck", 100 },
-                { "black-duck", 220 }
-            };
+           var postCountPerCategoryToDic = postCountPerCategory.ToDictionary(x => x.Key, x => x.Count);
 
-            return Json(dic);
+            return Json(postCountPerCategoryToDic);
         }
     }
 }
