@@ -9,14 +9,14 @@
     color: white;
 }
 
-.bar-chart {
-    background-color: #e6d03f;
-}
-
 svg text.cat {
     fill: #ffffff;
 }
 
 svg text.post {
     fill: #e6d03f;
+}
+
+.bar-chart {
+    background-color: #e6d03f;
 }

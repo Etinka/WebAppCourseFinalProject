@@ -80,7 +80,7 @@ function DrawPieChart(categories) {
         .outerRadius(60);
 
     // helper that returns a color based on an ID
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
+    var color = d3.scaleOrdinal(d3.schemeSet2);
 
     var svg = d3.select('svg#pie')
         .append('svg')
@@ -114,7 +114,7 @@ function DrawPieChart(categories) {
         .append('text')
         .text(function (d) { return '• ' + d.data.category; })
         .attr('fill', function (d) { return color(d.data.category); })
-        .attr('y', function (d, i) { return 20 * (i + 1); })
+        .attr('y', function (d, i) { return 20 * (i + 1); })    
 }
 
 function DrawGraph(categories) {
