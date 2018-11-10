@@ -1,7 +1,7 @@
 ﻿function DrawBarChart(categories) {
     // init chart
-    var svgWidth = 500;
-    var svgHeight = 300;
+    var svgWidth = 600;
+    var svgHeight = 200;
     var svg = d3.select('svg#bar')
         .attr("width", svgWidth)
         .attr("height", svgHeight)
@@ -11,8 +11,8 @@
     var categoryNames = Object.keys(categories);
 
 
-    var barPadding = 5;
-    var textSize = 16;
+    var barPadding = 7;
+    var textSize = 10;
     var barWidth = (svgWidth / dataset.length);
 
     svg.selectAll("rect")
@@ -21,10 +21,10 @@
         .append("rect")
         //Not Proportional
         .attr("y", function (d) {
-            return svgHeight - d
+            return svgHeight - (d*20) ;
         })
         .attr("height", function (d) {
-            return d;
+            return d*20;
         })
         .attr("width", barWidth - barPadding)
         .attr("transform", function (d, i) {
@@ -42,10 +42,10 @@
         .attr('x', function (d, i) {
             return i * (svgWidth / dataset.length) + (svgWidth / dataset.length) / 2;
         })
-        .attr('y', function (d, i) {
+        .attr('y', function (d, i) {//Text position
             return svgHeight - barPadding;
         })
-        .attr('font-size', 16);
+        .attr('font-size', textSize);
 
     svg.selectAll('text.post').data(dataset).enter()
         .append("text")
@@ -55,7 +55,7 @@
         .attr('class', 'post')
         .attr("text-anchor", "middle")
         .attr('y', function (d, i) {
-            return svgHeight - d + textSize + barPadding;
+            return svgHeight - d - textSize - barPadding;
         })
         .attr('x', function (d, i) {
             return i * (svgWidth / dataset.length) + (svgWidth / dataset.length) / 2;
