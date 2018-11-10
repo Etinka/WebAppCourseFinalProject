@@ -17,7 +17,6 @@ namespace WebAppCourseFinalProject.Controllers
     {
         public HomeController(UserContext context) : base(context)
         {
-
         }
 
         public async Task<IActionResult> Index()
@@ -65,7 +64,7 @@ namespace WebAppCourseFinalProject.Controllers
             DateTime? StartDate, DateTime? EndDate, string FreeSearchText)
         {
 
-            IQueryable<Post> query = _context.Post.Include("PostTags.Category");
+            IQueryable<Post> query = _context.Post;
 
             //Dates
             DateTime start = StartDate ?? new DateTime(1900, 01, 01);
@@ -83,8 +82,11 @@ namespace WebAppCourseFinalProject.Controllers
             {
                 foreach (var categoryId in SelectedCategories)
                 {
-                    query = query.Where(x => x.PostTags.Any(t => t.CategoryId == categoryId));
+                    //TODO: check if we can do Join here
+                    var categories = _context.Category.Where(x => x.Id == categoryId).FirstOrDefault();
+                    query = query.Where(x => x.Categories.Contains(categories));
                 }
+
             }
 
             //Free text

@@ -46,7 +46,11 @@ namespace WebAppCourseFinalProject.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<int?>("PostId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PostId");
 
                     b.ToTable("Category");
                 });
@@ -74,19 +78,6 @@ namespace WebAppCourseFinalProject.Migrations
                     b.HasIndex("WriterId");
 
                     b.ToTable("Post");
-                });
-
-            modelBuilder.Entity("WebAppCourseFinalProject.Models.PostCategory", b =>
-                {
-                    b.Property<int>("PostId");
-
-                    b.Property<int>("CategoryId");
-
-                    b.HasKey("PostId", "CategoryId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("PostCategory");
                 });
 
             modelBuilder.Entity("WebAppCourseFinalProject.Models.User", b =>
@@ -133,24 +124,18 @@ namespace WebAppCourseFinalProject.Migrations
                     b.ToTable("Writer");
                 });
 
+            modelBuilder.Entity("WebAppCourseFinalProject.Models.Category", b =>
+                {
+                    b.HasOne("WebAppCourseFinalProject.Models.Post")
+                        .WithMany("Categories")
+                        .HasForeignKey("PostId");
+                });
+
             modelBuilder.Entity("WebAppCourseFinalProject.Models.Post", b =>
                 {
                     b.HasOne("WebAppCourseFinalProject.Models.Writer", "Writer")
                         .WithMany("Posts")
                         .HasForeignKey("WriterId");
-                });
-
-            modelBuilder.Entity("WebAppCourseFinalProject.Models.PostCategory", b =>
-                {
-                    b.HasOne("WebAppCourseFinalProject.Models.Category", "Category")
-                        .WithMany("PostTags")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("WebAppCourseFinalProject.Models.Post", "Post")
-                        .WithMany("PostTags")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("WebAppCourseFinalProject.Models.Writer", b =>

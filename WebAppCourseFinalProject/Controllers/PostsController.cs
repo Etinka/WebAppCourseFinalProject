@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -35,7 +34,7 @@ namespace WebAppCourseFinalProject
                 return NotFound();
             }
 
-            var post = await _context.Post.Include("PostTags.Category").Include(p => p.Writer)
+            var post = await _context.Post.Include(p => p.Categories).Include(p => p.Writer)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (post == null)
             {
@@ -64,11 +63,7 @@ namespace WebAppCourseFinalProject
             {
                 post.Writer = await getWriterAsync();
                 twitterController.publishTweet(post.Writer.DisplayName + " just posted a new quack titled " + post.Title);
-                List<Category> categories = PrepareCategories(SelectedCategories, NewCategories);
-                foreach (var category in categories)
-                {
-                    _context.Add(new PostCategory { Post = post, Category = category });
-                }
+                post.Categories = PrepareCategories(SelectedCategories, NewCategories);
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -97,7 +92,7 @@ namespace WebAppCourseFinalProject
                 foreach (var name in newCategoriesArray)
                 {
                     var categoryExists = _context.Category.Where(x => x.Name == name.Trim()).FirstOrDefault();
-                    if (categoryExists != null)
+                    if(categoryExists != null)
                     {
                         categories.Add(categoryExists);
                     }
@@ -114,7 +109,7 @@ namespace WebAppCourseFinalProject
 
             return categories.Distinct().ToList();
         }
-
+       
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -123,8 +118,7 @@ namespace WebAppCourseFinalProject
                 return NotFound();
             }
 
-            var post = await _context.Post.Include("PostTags.Category").
-                FirstOrDefaultAsync(p => p.Id == id);
+            var post = await _context.Post.Include(p => p.Categories).FirstOrDefaultAsync(p => p.Id == id);
             if (post == null)
             {
                 return NotFound();
@@ -157,23 +151,7 @@ namespace WebAppCourseFinalProject
             {
                 try
                 {
-                    List<Category> categories = PrepareCategories(SelectedCategories, NewCategories);
-                        foreach (var category in categories)
-                        {
-                            var pcTag = _context.PostCategory.Where(e => e.CategoryId == category.Id && e.PostId == post.Id)
-                                .FirstOrDefault();
-                            if (pcTag == null)
-                            {
-                                var oldPostTag = GetPostTags(post).FirstOrDefault(e => e.Category.Name == category.Name);
-                                if (oldPostTag != null)
-                                {
-                                    GetPostTags(post).Remove(oldPostTag);
-                                    GetPostTags(post).Add(new PostCategory { Post = post, Category = category });
-                                }
-                                GetPostTags(post).Add(new PostCategory { Post = post, Category = category });
-                            }
-
-                        }
+                    post.Categories = PrepareCategories(SelectedCategories, NewCategories);
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }
@@ -193,28 +171,6 @@ namespace WebAppCourseFinalProject
             return View(post);
         }
 
-
-
-        private bool DidCategoriesChanged(Post post, List<Category> categories)
-        {
-            if (post.Categories.Count() != categories.Count() 
-                || !post.Categories.Equals(categories))
-            {
-                foreach (var category in post.Categories)
-                {
-                    var pcTag = _context.PostCategory.Where(e => e.CategoryId == category.Id && e.PostId == post.Id)
-                        .FirstOrDefault();
-                    if (pcTag == null)
-                    {
-                        GetPostTags(post).Remove(pcTag);
-                    }
-                }
-                return true;
-            }
-
-
-            return false;
-        }
         // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

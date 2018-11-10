@@ -9,7 +9,7 @@ namespace WebAppCourseFinalProject.Models
 {
     public class UserContext : DbContext
     {
-        public UserContext(DbContextOptions<UserContext> options)
+        public UserContext (DbContextOptions<UserContext> options)
             : base(options)
         {
         }
@@ -22,20 +22,5 @@ namespace WebAppCourseFinalProject.Models
 
         public DbSet<WebAppCourseFinalProject.Models.Category> Category { get; set; }
         public DbSet<WebAppCourseFinalProject.Models.Branch> Branch { get; set; }
-        public DbSet<WebAppCourseFinalProject.Models.PostCategory> PostCategory { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<PostCategory>()
-                .HasKey(t => new { t.PostId, t.CategoryId });
-
-            modelBuilder.Entity<PostCategory>()
-                .HasOne(pt => pt.Post)
-                .WithMany("PostTags");
-
-            modelBuilder.Entity<PostCategory>()
-                .HasOne(pt => pt.Category)
-                .WithMany("PostTags");
-        }
     }
 }
